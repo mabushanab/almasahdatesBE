@@ -1,0 +1,10 @@
+/home/mosab/dev/BE/src/main/java/com/example/controller/UserController.java
+/home/mosab/dev/BE/src/main/java/com/example/model/UserRole.java
+/home/mosab/dev/BE/src/main/java/com/example/repository/UserRepository.java
+/home/mosab/dev/BE/src/main/java/com/example/dto/UserDto.java
+/home/mosab/dev/BE/src/main/java/com/example/exception/UserNotFoundException.java
+/home/mosab/dev/BE/src/main/java/com/example/config/SecurityConfig.java
+/home/mosab/dev/BE/src/main/java/com/example/service/UserService.java
+/home/mosab/dev/BE/src/main/java/com/example/DemoApplication.java
+/home/mosab/dev/BE/src/main/java/com/example/model/User.java
+/home/mosab/dev/BE/src/main/java/com/example/exception/GlobalExceptionHandler.java
