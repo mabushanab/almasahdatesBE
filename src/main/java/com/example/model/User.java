@@ -1,5 +1,8 @@
 package com.example.model;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,7 +25,20 @@ public class User {
     private Long id;
 
     private String username;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User u = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return org.springframework.security.core.userdetails.User // <-- explicitly use Spring Security's User
+                .withUsername(u.getUsername())
+                .password(u.getPassword())
+                .roles(u.getRole().name())
+                .build();
+    }
 }
