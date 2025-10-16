@@ -15,31 +15,16 @@ public class ItemController {
 
     private final ItemService itemService;
 
-//    @GetMapping
-//    public List<ItemDto> getAllProducts() {
-//        return itemService.getAllItems();
-//    }
 
     @GetMapping("/list")
     public List<ItemDto> getAllProducts2() {
         return itemService.getAllItems();
     }
 
-//    @GetMapping("/{id}")
-//    public ProductDto getUser(@PathVariable Long id) {
-//        return productService.getProductById(id);
-//    }
-//
-
     @GetMapping("/{name}")
     public ItemDto getUser(@PathVariable String name) {
         return itemService.getByName(name);
     }
-
-//    @PostMapping
-//    public ItemDto createUser(@RequestBody ItemDto dto) {
-//        return itemService.createItem(dto);
-//    }
 
     @PostMapping("/create")
     public String createItem(@RequestBody Item item) {
@@ -50,4 +35,20 @@ public class ItemController {
     public String createItem(@RequestBody List<Item> items) {
         return itemService.createItemList(items);
     }
+
+//    @GetMapping("/{id}")
+//    public ProductDto getUser(@PathVariable Long id) {
+//        return productService.getProductById(id);
+//    }
+//
+
+//    @GetMapping
+//    public List<ItemDto> getAllProducts() {
+//        return itemService.getAllItems();
+//    }
+
+//    @PostMapping
+//    public ItemDto createUser(@RequestBody ItemDto dto) {
+//        return itemService.createItem(dto);
+//    }
 }

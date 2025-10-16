@@ -1,0 +1,1 @@
+curl -vv --location http://localhost:9090/auth/register/  --header "Content-Type: application/json" --data '{"username": "mosab", "password": "mosab"}'
