@@ -1,14 +1,12 @@
 package com.example.service;
 
 import com.example.dto.ItemDto;
-import com.example.dto.ProductDto;
 import com.example.model.Item;
 import com.example.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

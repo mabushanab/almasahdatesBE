@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.dto.ItemDto;
-import com.example.dto.ProductDto;
 import com.example.model.Item;
 import com.example.service.ItemService;
 import lombok.RequiredArgsConstructor;
