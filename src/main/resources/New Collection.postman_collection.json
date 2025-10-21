@@ -92,13 +92,85 @@
 			"response": []
 		},
 		{
+			"name": "/item/list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MDYxNjI3NywiZXhwIjoxNzYwNjE5ODc3fQ.ssnvsexZS-XIJfxV4ZdkY-CVP0-P9hH9XCQW1W3JPSs:",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/item/list",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"item",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/item/name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/item/صقعي",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"item",
+						"صقعي"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/item/name",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/item/صقعي",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"item",
+						"صقعي"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/item/createList",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MDYxNjI3NywiZXhwIjoxNzYwNjE5ODc3fQ.ssnvsexZS-XIJfxV4ZdkY-CVP0-P9hH9XCQW1W3JPSs",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTA0MjUxMCwiZXhwIjoxNzYxMDQ2MTEwfQ.1TbvQSftt80OTUmcYaXTS2Y8pCCR4OK6HTTepdFU3oU",
 						"type": "text"
 					}
 				],
@@ -119,6 +191,39 @@
 					"path": [
 						"item",
 						"createList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/item/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTA0MjUxMCwiZXhwIjoxNzYxMDQ2MTEwfQ.1TbvQSftt80OTUmcYaXTS2Y8pCCR4OK6HTTepdFU3oU",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"خضري مبروم\",\r\n    \"type\": \"تمر\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/item/create",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"item",
+						"create"
 					]
 				}
 			},

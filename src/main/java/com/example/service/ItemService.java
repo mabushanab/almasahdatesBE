@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.dto.ItemDto;
 import com.example.model.Item;
 import com.example.repository.ItemRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,12 +45,12 @@ public class ItemService {
     public ItemDto getByName(String name) {
         Item item = itemRepository.findByName(name);
 
-        return new ItemDto(item.getName(),item.getType(),item.getSubtype(),item.getDescr());
+        return new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr());
     }
 
     public List<ItemDto> getAllItems() {
         return itemRepository.findAll().stream().
-                map(item -> new ItemDto(item.getName(),item.getType(), item.getSubtype(), item.getDescr())).toList();
+                map(item -> new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr())).toList();
     }
 
 //    public List<Item> getAllProducts2() {
@@ -67,6 +68,12 @@ public class ItemService {
             throw new IllegalArgumentException("Item already exist");
         else itemRepository.save(item);
         return "The Item: " + item.getName() + " saved successfully";
+    }
+
+    @Transactional
+    public String deleteItem(String name) {
+        itemRepository.deleteByName(name);
+        return "The Item: " + name + " deleted successfully";
     }
 
     public String createItemList(List<Item> items) {
