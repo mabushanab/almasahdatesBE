@@ -21,7 +21,7 @@ public class PurchaseOrder {
 
     @ManyToOne
     @JoinColumn(name = "merchant_id")
-    private Merchant marchent;
+    private Merchant merchant;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "purchase_order_id") // foreign key in Item table
