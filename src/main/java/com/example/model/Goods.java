@@ -8,7 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "app_goods")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+//@NoArgsConstructor
+@AllArgsConstructor
 public class Goods {
 
 
@@ -24,4 +27,10 @@ public class Goods {
     private float weightInGrams;
     private String notes;
 
+    public Goods(Item item, float priceForGrams, float weightInGrams, String notes) {
+        this.item = item;
+        this.priceForGrams = priceForGrams;
+        this.weightInGrams = weightInGrams;
+        this.notes = notes;
+    }
 }

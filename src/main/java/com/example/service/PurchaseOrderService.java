@@ -1,13 +1,18 @@
 package com.example.service;
 
+import com.example.dto.GoodsDto;
 import com.example.dto.PurchaseOrderDto;
 import com.example.model.Goods;
+import com.example.model.Merchant;
 import com.example.model.PurchaseOrder;
 import com.example.repository.PurchaseOrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,22 +20,42 @@ import java.util.List;
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
+    private final MerchantService merchantService;
+    private final ItemService itemService;
 
-    public PurchaseOrderDto getByName(String name) {
-        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
-//        List<Goods> goods =
-        return new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
-                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes());
-    }
+//    public PurchaseOrderDto getByName(String name) {
+//        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
 
-    public List<PurchaseOrderDto> getAllPurchaseOrders() {
-        return purchaseOrderRepository.findAll().stream().
-                map(purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
-                        purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
-    }
+    /// /        List<Goods> goods =
+//        return new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
+//                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes());
+//    }
+//
+//    public List<PurchaseOrderDto> getAllPurchaseOrders() {
+//        return purchaseOrderRepository.findAll().stream().
+//                map(purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
+//                        purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
+//    }
+    public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
 
-    public String createPurchaseOrder(PurchaseOrder purchaseOrder) {
-         purchaseOrderRepository.save(purchaseOrder);
+//        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+//        String formattedDate = formatter.format(LocalDate.now());
+
+        Merchant merchant = merchantService.getMerchantByName(purchaseOrderDto.getMerchantName());
+//        GoodsService
+
+        List<Goods> goods = purchaseOrderDto.getGoods().stream().map(
+                g -> new Goods(itemService.getEntityByName(g.getItemName()) , g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()))
+                .toList();
+
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
+        purchaseOrder.setMerchant(merchant);
+        purchaseOrder.setGoods(goods);
+        purchaseOrder.setDate(LocalDate.now());
+        purchaseOrder.setRemainAmount(purchaseOrderDto.getRemainAmount());
+        purchaseOrder.setTotalPrice(purchaseOrderDto.getTotalPrice());
+        purchaseOrder.setNotes(purchaseOrderDto.getNotes());
+        purchaseOrderRepository.save(purchaseOrder);
         return "The Purchase Order for merchant : " + purchaseOrder.getMerchant().getName() + " saved successfully";
     }
 

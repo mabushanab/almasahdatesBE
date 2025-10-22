@@ -5,9 +5,9 @@ import com.example.model.PurchaseOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
-    PurchaseOrder findByName(String name);
-    boolean existsByName(String name);
+//    PurchaseOrder findByName(String name);
+//    boolean existsByName(String name);
 
-    void deleteByName(String name);
+//    void deleteByName(String name);
 //    Item findByName(String name);
 }

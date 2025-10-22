@@ -21,6 +21,10 @@ public class MerchantService {
         return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
     }
 
+    Merchant getMerchantByName(String name) {
+        return merchantRepository.findByName(name);
+    }
+
     public List<MerchantDto> getAllMerchants() {
         return merchantRepository.findAll().stream().
                 map(merchant -> new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes())).toList();

@@ -48,6 +48,11 @@ public class ItemService {
         return new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr());
     }
 
+    public Item getEntityByName(String name) {
+
+        return itemRepository.findByName(name);
+    }
+
     public List<ItemDto> getAllItems() {
         return itemRepository.findAll().stream().
                 map(item -> new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr())).toList();
