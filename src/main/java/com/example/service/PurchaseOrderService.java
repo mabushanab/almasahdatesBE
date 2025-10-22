@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,32 +26,31 @@ public class PurchaseOrderService {
 
 //    public PurchaseOrderDto getByName(String name) {
 //        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
-
-    /// /        List<Goods> goods =
+//
+//           List<Goods> goods =
 //        return new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
 //                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes());
 //    }
-//
-//    public List<PurchaseOrderDto> getAllPurchaseOrders() {
-//        return purchaseOrderRepository.findAll().stream().
-//                map(purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
-//                        purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
-//    }
+
+    public List<PurchaseOrderDto> getAllPurchaseOrders() {
+
+        return purchaseOrderRepository.findAll().stream().
+                map(purchaseOrder ->
+                        new PurchaseOrderDto(purchaseOrder.getMerchant().getName(), purchaseOrderRepository.findAll().stream().flatMap(p ->
+                                p.getGoods().stream().map(g ->
+                                        new GoodsDto(g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes())
+                                )
+                        ).collect(Collectors.toList()), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
+                                purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
+    }
+
     public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
 
-//        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-//        String formattedDate = formatter.format(LocalDate.now());
-
-        Merchant merchant = merchantService.getMerchantByName(purchaseOrderDto.getMerchantName());
-//        GoodsService
-
-        List<Goods> goods = purchaseOrderDto.getGoods().stream().map(
-                g -> new Goods(itemService.getEntityByName(g.getItemName()) , g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()))
-                .toList();
-
         PurchaseOrder purchaseOrder = new PurchaseOrder();
-        purchaseOrder.setMerchant(merchant);
-        purchaseOrder.setGoods(goods);
+        purchaseOrder.setMerchant(merchantService.getMerchantByName(purchaseOrderDto.getMerchantName()));
+        purchaseOrder.setGoods(purchaseOrderDto.getGoods().stream().map(
+                        g -> new Goods(itemService.getEntityByName(g.getItemName()), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()))
+                .toList());
         purchaseOrder.setDate(LocalDate.now());
         purchaseOrder.setRemainAmount(purchaseOrderDto.getRemainAmount());
         purchaseOrder.setTotalPrice(purchaseOrderDto.getTotalPrice());

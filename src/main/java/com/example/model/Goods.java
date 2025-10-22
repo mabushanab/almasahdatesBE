@@ -10,7 +10,7 @@ import lombok.Setter;
 @Table(name = "app_goods")
 @Getter
 @Setter
-//@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class Goods {
 

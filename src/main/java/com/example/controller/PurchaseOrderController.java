@@ -15,10 +15,10 @@ public class PurchaseOrderController {
 
     private final PurchaseOrderService purchaseOrderService;
 
-//    @GetMapping("/list")
-//    public List<PurchaseOrderDto> getAllProducts2() {
-//        return purchaseOrderService.getAllPurchaseOrders();
-//    }
+    @GetMapping("/list")
+    public List<PurchaseOrderDto> getAllProducts2() {
+        return purchaseOrderService.getAllPurchaseOrders();
+    }
 
     @PostMapping("/create")
     public String createProduct(@RequestBody PurchaseOrderDto purchaseOrderDto) {
