@@ -18,4 +18,5 @@ public class MerchantDto {
     private int rate;
 
     private String notes;
+
 }

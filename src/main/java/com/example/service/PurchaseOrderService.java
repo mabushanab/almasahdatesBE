@@ -33,14 +33,11 @@ public class PurchaseOrderService {
 //    }
 
     public List<PurchaseOrderDto> getAllPurchaseOrders() {
-
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
-                        new PurchaseOrderDto(purchaseOrder.getMerchant().getName(), purchaseOrderRepository.findAll().stream().flatMap(p ->
-                                p.getGoods().stream().map(g ->
-                                        new GoodsDto(g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes())
-                                )
-                        ).collect(Collectors.toList()), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
+                        new PurchaseOrderDto(purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
+                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()
+                        )).toList(), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
                                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
     }
 
