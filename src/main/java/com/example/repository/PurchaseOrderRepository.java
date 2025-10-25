@@ -8,6 +8,6 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
 //    PurchaseOrder findByName(String name);
 //    boolean existsByName(String name);
 
-//    void deleteByName(String name);
+//    void deleteByName(String );
 //    Item findByName(String name);
 }
