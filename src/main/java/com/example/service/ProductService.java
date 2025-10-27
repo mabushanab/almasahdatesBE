@@ -1,19 +1,24 @@
 package com.example.service;
 
+import com.example.dto.ProductDto;
+import com.example.model.Products;
 import com.example.repository.GoodsRepository;
+import com.example.repository.ProductsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final GoodsRepository goodsRepository;
+    private final ProductsRepository productsRepository;
 
 
-//    public Goods getEntityByName(String name) {
-//
-//        return goodsRepository.findByName(name);
+    public List<Products> getAllByItemId(long Itemid) {
+
+        return productsRepository.findByItemId(Itemid);}}
 //    }
 
 //    public GoodsDto getByName(String name) {
@@ -60,4 +65,3 @@ public class ProductService {
 //        }
 //
 //    }
-}

@@ -53,6 +53,10 @@ public class ItemService {
         return itemRepository.findByName(name);
     }
 
+    public List<Item> getAllItemsEntities() {
+        return itemRepository.findAll();
+    }
+
     public List<ItemDto> getAllItems() {
         return itemRepository.findAll().stream().
                 map(item -> new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr())).toList();

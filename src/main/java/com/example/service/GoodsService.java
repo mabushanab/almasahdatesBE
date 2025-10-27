@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.GoodsDto;
 import com.example.model.Goods;
+import com.example.model.Products;
 import com.example.repository.GoodsRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,10 @@ public class GoodsService {
 
     private final GoodsRepository goodsRepository;
 
+    public List<Goods> getAllByItemId(Long Itemid) {
+        return goodsRepository.findByItemId(Itemid);
+    }
+}
 
 //    public Goods getEntityByName(String name) {
 //
@@ -32,9 +37,9 @@ public class GoodsService {
 //                map(goods -> new GoodsDto(goods.getName(), goods.getType(), goods.getSubtype(), goods.getDescr())).toList();
 //    }
 //
-////    public List<Goods> getAllProducts2() {
-////        return goodsRepository.findAll();
-////    }
+/// /    public List<Goods> getAllProducts2() {
+/// /        return goodsRepository.findAll();
+/// /    }
 //
 ////    public GoodsDto createGoods(GoodsDto dto) {
 ////        Goods goods = new Goods(dto.getName(),dto.getDesc(),dto.getType(),dto.getSubtype());
@@ -65,4 +70,3 @@ public class GoodsService {
 //        }
 //
 //    }
-}
