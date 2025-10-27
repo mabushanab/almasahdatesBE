@@ -26,4 +26,11 @@ public class Products {
 
     private String notes;
 
+    public Products(Item item, float priceForItem, int quantity, float boxCost, String notes) {
+        this.item = item;
+        this.priceForItem = priceForItem;
+        this.quantity = quantity;
+        this.boxCost = boxCost;
+        this.notes = notes;
+    }
 }

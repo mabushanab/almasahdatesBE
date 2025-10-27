@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class SaleOrder {
     @JoinColumn(name = "sale_order_id") // foreign key in Item table
     private List<Products> products;
 
-    private Date date;
+    private LocalDate date;
     private float totalPrice;
     private float remainAmount;
-    private String descr;
+    private String notes;
 
 }

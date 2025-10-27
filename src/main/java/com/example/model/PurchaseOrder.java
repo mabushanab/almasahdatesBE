@@ -36,10 +36,4 @@ public class PurchaseOrder {
     private float remainAmount;
     private String notes;
 
-//    public PurchaseOrder(Merchant byName, List<Goods> goods, Date date, float totalPrice, float remainAmount, String notes) {
-////        this.m
-////        this.date = new Date();
-////        Date today = new Date();
-//
-//    }
 }
