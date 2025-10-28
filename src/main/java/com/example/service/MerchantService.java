@@ -15,6 +15,12 @@ public class MerchantService {
 
     private final MerchantRepository merchantRepository;
 
+    public MerchantDto getByName2(String name) {
+        Merchant merchant = merchantRepository.findByName(name);
+
+        return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
+    }
+
     public MerchantDto getByName(String name) {
         Merchant merchant = merchantRepository.findByName(name);
 

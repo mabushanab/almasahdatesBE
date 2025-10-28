@@ -20,5 +20,9 @@ public class HomeDto {
     double sumSORemain;
     Map<String, Double> avgProductPrice;
     Map<String, Double> avgGoodPrice;
+    Map<String, Double> avgProductPriceWithBox;
+    Map<String, Double> avgProfitPerItem;
+    Map<String, Double> totalProfitPerItem;
+
 
 }
