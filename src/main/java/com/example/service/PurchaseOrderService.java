@@ -62,6 +62,10 @@ public class PurchaseOrderService {
         return "The PurchaseOrder deleted successfully";
     }
 
+    public List<PurchaseOrder> getByMerchantId(Long id) {
+     return purchaseOrderRepository.getByMerchantId(id);
+    }
+
 //    public String createPurchaseOrderList(List<PurchaseOrder> purchaseOrders) {
 //        List<PurchaseOrder> p = purchaseOrders.stream().filter(purchaseOrder -> !purchaseOrderRepository.existsByName(purchaseOrder.getName())).toList();
 //        if (p.isEmpty())

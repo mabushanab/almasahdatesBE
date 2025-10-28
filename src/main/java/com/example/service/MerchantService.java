@@ -2,21 +2,30 @@ package com.example.service;
 
 import com.example.dto.MerchantDto;
 import com.example.model.Merchant;
+import com.example.model.PurchaseOrder;
 import com.example.repository.MerchantRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
+    private final PurchaseOrderService purchaseOrderService;
 
     public MerchantDto getByName2(String name) {
-        Merchant merchant = merchantRepository.findByName(name);
+        List<Merchant> merchant = merchantRepository.findAll()
+                .stream().collect(Collectors.toMap(
+                        Merchant::getName, m -> {
+                            List<PurchaseOrder> pos = purchaseOrderService.getByMerchantId(m.getId());
+                        }
+                        ));
+
 
         return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
     }

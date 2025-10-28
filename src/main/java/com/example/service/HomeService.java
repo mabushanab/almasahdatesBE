@@ -2,17 +2,15 @@ package com.example.service;
 
 //import com.example.dto.CreditDebitDto;
 
-import com.example.dto.*;
+import com.example.dto.HomeDto;
+import com.example.dto.PurchaseOrderDto;
+import com.example.dto.SaleOrderDto;
 import com.example.model.Goods;
 import com.example.model.Item;
 import com.example.model.Products;
-import com.example.model.PurchaseOrder;
-import com.example.repository.PurchaseOrderRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -135,6 +133,7 @@ public class HomeService {
                             return Math.round(totalProfit * 100.0) / 100.0;
                         }
                 ));
+
 
 
 
