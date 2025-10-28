@@ -1,5 +1,7 @@
 package com.example.dto;
 
+import com.example.model.PurchaseOrder;
+import com.example.model.SaleOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,9 @@ public class HomeDto {
     Map<String, Double> avgProductPriceWithBox;
     Map<String, Double> avgProfitPerItem;
     Map<String, Double> totalProfitPerItem;
+    Map<String, Double> MerchantRemainAmount;
+    Map<String, List<PurchaseOrder>> merchantPOs;
+    Map<String, List<SaleOrder>> customerSOs;
 
 
 }

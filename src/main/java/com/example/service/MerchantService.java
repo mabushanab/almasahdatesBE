@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,19 +17,20 @@ import java.util.stream.Collectors;
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
-    private final PurchaseOrderService purchaseOrderService;
 
-    public MerchantDto getByName2(String name) {
-        List<Merchant> merchant = merchantRepository.findAll()
-                .stream().collect(Collectors.toMap(
-                        Merchant::getName, m -> {
-                            List<PurchaseOrder> pos = purchaseOrderService.getByMerchantId(m.getId());
-                        }
-                        ));
+//    public Map<String, List<Float>> getMerchantRemainAmount() {
+//        return merchantRepository.findAll()
+//                .stream().collect(Collectors.toMap(
+//                        Merchant::getName, m -> {
+//                            return purchaseOrderService.getByMerchantId(m.getId())
+//                                    .stream().map(PurchaseOrder::getRemainAmount).toList();
+//                        }
+//                ));
 
 
-        return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
-    }
+//        return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
+//    }
+
 
     public MerchantDto getByName(String name) {
         Merchant merchant = merchantRepository.findByName(name);
@@ -43,6 +45,10 @@ public class MerchantService {
     public List<MerchantDto> getAllMerchants() {
         return merchantRepository.findAll().stream().
                 map(merchant -> new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes())).toList();
+    }
+
+    public List<Merchant> getAllMerchantsEntities() {
+        return merchantRepository.findAll();
     }
 
     public String createMerchant(Merchant merchant) {

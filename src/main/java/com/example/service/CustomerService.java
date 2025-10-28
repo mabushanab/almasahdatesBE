@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -53,5 +54,9 @@ public class CustomerService {
             return "The Customers: " + S + " saved successfully";
         }
 
+    }
+
+    public List<Customer> getAllSaleOrdersEntities() {
+        return customerRepository.findAll();
     }
 }

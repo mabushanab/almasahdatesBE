@@ -5,9 +5,7 @@ package com.example.service;
 import com.example.dto.HomeDto;
 import com.example.dto.PurchaseOrderDto;
 import com.example.dto.SaleOrderDto;
-import com.example.model.Goods;
-import com.example.model.Item;
-import com.example.model.Products;
+import com.example.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +19,7 @@ public class HomeService {
 
     //    private final PurchaseOrderRepository purchaseOrderRepository;
     private final MerchantService merchantService;
+    private final CustomerService customerService;
     private final ItemService itemService;
     private final PurchaseOrderService purchaseOrderService;
     private final SaleOrderService saleOrderService;
@@ -134,11 +133,50 @@ public class HomeService {
                         }
                 ));
 
+//        Map<String, Double> merchantRemainAmount = merchantService.getAllMerchantsEntities()
+//                .stream().collect(Collectors.toMap(
+//                        Merchant::getName, m -> {
+//                            return purchaseOrderService.getByMerchantId(m.getId())
+//                                    .stream().mapToDouble(PurchaseOrder::getRemainAmount).sum();
+//                        }
+//                ));
 
+        Map<String, List<SaleOrder>> customerSOs = customerService.getAllSaleOrdersEntities()
+                .stream().collect(Collectors.toMap(
+                        Customer::getName, c -> {
+                            return saleOrderService.getByCustomerId(c.getId());
+                        }
+                ));
+
+        Map<String, List<PurchaseOrder>> merchantPOs = merchantService.getAllMerchantsEntities()
+                .stream().collect(Collectors.toMap(
+                        Merchant::getName, m -> {
+                            return purchaseOrderService.getByMerchantId(m.getId());
+                        }
+                ));
+        Map<String, Double> merchantRemainAmount = merchantPOs.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue()
+                                .stream()
+                                .mapToDouble(PurchaseOrder::getRemainAmount)
+                                .sum()
+                ));
+
+
+//
+//        Map<String, List<Float>> merchantRemainAmount = merchantService.getAllMerchantsEntities()
+//                .stream().collect(Collectors.toMap(
+//                        Merchant::getName, m -> {
+//                            return purchaseOrderService.getByMerchantId(m.getId())
+//                                    .stream().map(PurchaseOrder::getRemainAmount).toList();
+//                        }
+//                ));
 
 
         return new HomeDto(poSum, poSumRemain, soSum, soSumRemain, avgProductPrice, avgGoodPrice
-                , avgProductPriceWithBox, avgProfitPerItem, totalProfitPerItem);
+                , avgProductPriceWithBox, avgProfitPerItem, totalProfitPerItem, merchantRemainAmount, merchantPOs, customerSOs);
 
     }
 

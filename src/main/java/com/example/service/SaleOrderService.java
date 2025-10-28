@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dto.ProductDto;
 import com.example.dto.SaleOrderDto;
+import com.example.model.Customer;
 import com.example.model.Products;
 import com.example.model.SaleOrder;
 import com.example.repository.SaleOrderRepository;
@@ -57,6 +58,9 @@ public class SaleOrderService {
         saleOrderRepository.deleteById(id);
         return "The SaleOrder deleted successfully";
     }
+
+    public List<SaleOrder> getByCustomerId(Long id) {
+        return saleOrderRepository.getByCustomerId(id);}
 
 //    public String createSaleOrderList(List<SaleOrder> saleOrders) {
 //        List<SaleOrder> p = saleOrders.stream().filter(saleOrder -> !saleOrderRepository.existsByName(saleOrder.getName())).toList();
