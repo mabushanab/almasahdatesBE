@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,8 +32,7 @@ public class PdfService {
             writer.setPageEvent(new HeaderFooterPageEvent());
             document.open();
 
-            BaseFont bf = BaseFont.createFont("src/main/resources/fonts/Amiri-Regular.ttf",
-                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = loadBaseFont();
             Font normal = new Font(bf, 12);
             Font bold = new Font(bf, 14, Font.BOLD);
             Font title = new Font(bf, 20, Font.BOLD);
@@ -84,8 +85,7 @@ public class PdfService {
             writer.setPageEvent(new HeaderFooterPageEvent());
             document.open();
 
-            BaseFont bf = BaseFont.createFont("src/main/resources/fonts/Amiri-Regular.ttf",
-                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            BaseFont bf = loadBaseFont();
             Font normal = new Font(bf, 12);
             Font bold = new Font(bf, 14, Font.BOLD);
             Font title = new Font(bf, 20, Font.BOLD);
@@ -118,6 +118,17 @@ public class PdfService {
             return baos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate purchase invoice PDF", e);
+        }
+    }
+
+    // =================== FONT LOADER ===================
+    private BaseFont loadBaseFont() throws IOException, DocumentException {
+        try (InputStream fontStream = getClass().getResourceAsStream("/fonts/Amiri-Regular.ttf")) {
+            if (fontStream == null) {
+                throw new IOException("Font not found in /resources/fonts/Amiri-Regular.ttf");
+            }
+            byte[] fontBytes = fontStream.readAllBytes();
+            return BaseFont.createFont("Amiri-Regular.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED, true, fontBytes, null);
         }
     }
 
@@ -185,7 +196,7 @@ public class PdfService {
 
     private PdfPCell createWrappedCell(String text, Font font) {
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
-        cell.setNoWrap(false); // allow wrapping long text
+        cell.setNoWrap(false);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setPadding(6);
@@ -204,19 +215,21 @@ public class PdfService {
                 header.setLockedWidth(true);
                 header.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 
-                try {
-                    Image logo = Image.getInstance("src/main/resources/images/darkGreenLogo.png");
-                    logo.scaleToFit(60, 60);
-                    PdfPCell logoCell = new PdfPCell(logo);
-                    logoCell.setBorder(Rectangle.NO_BORDER);
-                    logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    header.addCell(logoCell);
-                } catch (Exception e) {
-                    header.addCell(new PdfPCell(new Phrase(" ")));
+                // Load logo from classpath
+                try (InputStream logoStream = getClass().getResourceAsStream("/images/darkGreenLogo.png")) {
+                    if (logoStream != null) {
+                        Image logo = Image.getInstance(logoStream.readAllBytes());
+                        logo.scaleToFit(60, 60);
+                        PdfPCell logoCell = new PdfPCell(logo);
+                        logoCell.setBorder(Rectangle.NO_BORDER);
+                        logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                        header.addCell(logoCell);
+                    } else {
+                        header.addCell(new PdfPCell(new Phrase(" ")));
+                    }
                 }
 
-                BaseFont bf = BaseFont.createFont("src/main/resources/fonts/Amiri-Regular.ttf",
-                        BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                BaseFont bf = loadBaseFont();
                 Font headerFont = new Font(bf, 12);
 
                 PdfPCell textCell = new PdfPCell(new Phrase(
