@@ -19,6 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,6 +81,14 @@ public class PurchaseOrderService {
     }
 
     public byte[] generateInvoice2(String customerName, double totalAmount) {
+
+        getByMerchantId(merchantService.getMerchantByName(customerName).getId())
+                .stream().collect(Collectors.toMap(
+                 po -> po.getTotalPrice(),
+                        )
+                )
+
+
         return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
                 merchantService.getMerchantByName(customerName).getId()
         ));
