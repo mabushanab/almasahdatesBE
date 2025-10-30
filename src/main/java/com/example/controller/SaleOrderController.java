@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.dto.SaleOrderDto;
 import com.example.service.SaleOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,16 @@ public class SaleOrderController {
         return saleOrderService.createSaleOrder(saleOrderDto);
     }
 
+    @GetMapping("/invoice")
+    public ResponseEntity<byte[]> getInvoice(@RequestParam String name) {
+        byte[] pdf = saleOrderService.generateInvoice(name);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("invoice.pdf").build());
+
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
 
 //    @GetMapping("/{name}")
 //    public SaleOrderDto getUser(@PathVariable String name) {

@@ -80,18 +80,18 @@ public class PurchaseOrderService {
 
     }
 
-    public byte[] generateInvoice2(String customerName, double totalAmount) {
-
-        getByMerchantId(merchantService.getMerchantByName(customerName).getId())
-                .stream().collect(Collectors.toMap(
-                 po -> po.getTotalPrice(),
-                        )
-                )
-
-
-        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
-                merchantService.getMerchantByName(customerName).getId()
-        ));
-
-    }
+//    public byte[] generateInvoice2(String customerName, double totalAmount) {
+//
+//        getByMerchantId(merchantService.getMerchantByName(customerName).getId())
+//                .stream().collect(Collectors.toMap(
+//                 po -> po.getTotalPrice(),
+//                        )
+//                )
+//
+//
+//        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
+//                merchantService.getMerchantByName(customerName).getId()
+//        ));
+//
+//    }
 }

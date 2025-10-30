@@ -20,6 +20,8 @@ public class SaleOrderService {
     private final SaleOrderRepository saleOrderRepository;
     private final CustomerService customerService;
     private final ItemService itemService;
+    private final PdfService pdfService;
+
 
 //    public SaleOrderDto getByName(String name) {
 //        SaleOrder saleOrder = saleOrderRepository.findByName(name);
@@ -33,7 +35,7 @@ public class SaleOrderService {
         return saleOrderRepository.findAll().stream().
                 map(saleOrder ->
                         new SaleOrderDto(saleOrder.getCustomer().getName(), saleOrder.getProducts().stream().map(g -> new ProductDto(
-                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(),g.getNotes()
+                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()
                         )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
                                 saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
     }
@@ -43,7 +45,7 @@ public class SaleOrderService {
         SaleOrder saleOrder = new SaleOrder();
         saleOrder.setCustomer(customerService.getCustomerByName(saleOrderDto.getCustomerName()));
         saleOrder.setProducts(saleOrderDto.getProducts().stream().map(
-                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(),g.getBoxCost(), g.getNotes()))
+                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()))
                 .toList());
         saleOrder.setDate(LocalDate.now());
         saleOrder.setRemainAmount(saleOrderDto.getRemainAmount());
@@ -60,8 +62,16 @@ public class SaleOrderService {
     }
 
     public List<SaleOrder> getByCustomerId(Long id) {
-        return saleOrderRepository.getByCustomerId(id);}
+        return saleOrderRepository.getByCustomerId(id);
+    }
 
+    public byte[] generateInvoice(String customerName) {
+        return pdfService.generateInvoiceSOs(customerName,getByCustomerId(
+                customerService.getCustomerByName(customerName).getId())
+        );
+
+    }
+}
 //    public String createSaleOrderList(List<SaleOrder> saleOrders) {
 //        List<SaleOrder> p = saleOrders.stream().filter(saleOrder -> !saleOrderRepository.existsByName(saleOrder.getName())).toList();
 //        if (p.isEmpty())
@@ -73,4 +83,3 @@ public class SaleOrderService {
 //        }
 //
 //    }
-}
