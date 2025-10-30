@@ -3,18 +3,22 @@ package com.example.service;
 import com.example.dto.GoodsDto;
 import com.example.dto.PurchaseOrderDto;
 import com.example.model.Goods;
-import com.example.model.Merchant;
 import com.example.model.PurchaseOrder;
 import com.example.repository.PurchaseOrderRepository;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class PurchaseOrderService {
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final MerchantService merchantService;
     private final ItemService itemService;
+    private final PdfService pdfService;
 
 //    public PurchaseOrderDto getByName(String name) {
 //        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
@@ -63,18 +68,20 @@ public class PurchaseOrderService {
     }
 
     public List<PurchaseOrder> getByMerchantId(Long id) {
-     return purchaseOrderRepository.getByMerchantId(id);
+        return purchaseOrderRepository.getByMerchantId(id);
     }
 
-//    public String createPurchaseOrderList(List<PurchaseOrder> purchaseOrders) {
-//        List<PurchaseOrder> p = purchaseOrders.stream().filter(purchaseOrder -> !purchaseOrderRepository.existsByName(purchaseOrder.getName())).toList();
-//        if (p.isEmpty())
-//            return "All purchaseOrders already exist";
-//        else {
-//            String S = p.stream().map(m -> m.getName() + ' ').toString();
-//            purchaseOrderRepository.saveAll(p);
-//            return "The PurchaseOrders: " + S + " saved successfully";
-//        }
-//
-//    }
+    public byte[] generateInvoice(String customerName, double totalAmount) {
+        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
+                merchantService.getMerchantByName(customerName).getId()
+        ));
+
+    }
+
+    public byte[] generateInvoice2(String customerName, double totalAmount) {
+        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
+                merchantService.getMerchantByName(customerName).getId()
+        ));
+
+    }
 }

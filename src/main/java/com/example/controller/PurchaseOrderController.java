@@ -4,6 +4,7 @@ import com.example.dto.PurchaseOrderDto;
 import com.example.model.PurchaseOrder;
 import com.example.service.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,17 @@ public class PurchaseOrderController {
         return purchaseOrderService.createPurchaseOrder(purchaseOrderDto);
     }
 
+
+    @GetMapping("/invoice")
+    public ResponseEntity<byte[]> getInvoice(@RequestParam String name, @RequestParam double amount) {
+        byte[] pdf = purchaseOrderService.generateInvoice(name, amount);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline().filename("invoice.pdf").build());
+
+        return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
 
 //    @GetMapping("/{name}")
 //    public PurchaseOrderDto getUser(@PathVariable String name) {
