@@ -54,7 +54,7 @@ public class PdfService {
             table.addCell(createHeaderCell("الكمية", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
 
-            List<Products> products = saleOrders.get(1).getProducts();
+            List<Products> products = saleOrders.get(0).getProducts();
             for (Products product : products) {
                 table.addCell(createWrappedCell(product.getItem().getName(), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
