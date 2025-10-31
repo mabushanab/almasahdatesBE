@@ -1,6 +1,7 @@
 package com.example.dto;
 
 import com.example.model.Item;
+import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaleOrderDto {
+
+    private String sOId;
     private String customerName;
     private List<ProductDto> products;
     private LocalDate date;

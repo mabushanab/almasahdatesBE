@@ -23,6 +23,9 @@ public class PurchaseOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String pOId;
+
     @ManyToOne
     @JoinColumn(name = "merchant_id")
     private Merchant merchant;

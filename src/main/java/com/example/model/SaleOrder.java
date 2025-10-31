@@ -20,6 +20,9 @@ public class SaleOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String sOId;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

@@ -25,7 +25,7 @@ public class PdfService {
     private final MerchantService merchantService;
 
     // =================== SALE INVOICE ===================
-    public byte[] generateInvoiceSOs(String customerName, List<SaleOrder> saleOrders) {
+    public byte[] generateInvoiceSOs(String customerName, List<Products> saleOrders) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4, 36, 36, 80, 60);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
@@ -55,8 +55,8 @@ public class PdfService {
             table.addCell(createHeaderCell("الكمية", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
 
-            List<Products> products = saleOrders.get(0).getProducts();
-            for (Products product : products) {
+//            List<Products> products = saleOrders.get(0).getProducts();
+            for (Products product : saleOrders) {
                 table.addCell(createWrappedCell(product.getItem().getName(), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
                 table.addCell(createWrappedCell(String.valueOf(product.getQuantity()), normal));
@@ -64,7 +64,7 @@ public class PdfService {
                         String.format("%.2f", product.getPriceForItem() * product.getQuantity()), normal));
             }
 
-            double totalAmount = products.stream().mapToDouble(p -> p.getQuantity() * p.getPriceForItem()).sum();
+            double totalAmount = saleOrders.stream().mapToDouble(p -> p.getQuantity() * p.getPriceForItem()).sum();
             document.add(table);
             document.add(Chunk.NEWLINE);
 

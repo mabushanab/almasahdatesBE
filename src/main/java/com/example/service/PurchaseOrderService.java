@@ -5,22 +5,14 @@ import com.example.dto.PurchaseOrderDto;
 import com.example.model.Goods;
 import com.example.model.PurchaseOrder;
 import com.example.repository.PurchaseOrderRepository;
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +22,7 @@ public class PurchaseOrderService {
     private final MerchantService merchantService;
     private final ItemService itemService;
     private final PdfService pdfService;
+    private final JdbcTemplate jdbcTemplate;
 
 //    public PurchaseOrderDto getByName(String name) {
 //        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
@@ -42,15 +35,23 @@ public class PurchaseOrderService {
     public List<PurchaseOrderDto> getAllPurchaseOrders() {
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
-                        new PurchaseOrderDto(purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
+                        new PurchaseOrderDto(purchaseOrder.getPOId(), purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
                                 g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()
                         )).toList(), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
                                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
     }
 
+    @Transactional
     public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
 
+        long nextVal = getNextSequenceValue("purchase_order");
+        String poId = "PO-" + LocalDate.now().toString().replace("-","")
+                + "-" + String.format("%04d", nextVal);
+
+
         PurchaseOrder purchaseOrder = new PurchaseOrder();
+
+        purchaseOrder.setPOId(poId);
         purchaseOrder.setMerchant(merchantService.getMerchantByName(purchaseOrderDto.getMerchantName()));
         purchaseOrder.setGoods(purchaseOrderDto.getGoods().stream().map(
                         g -> new Goods(itemService.getEntityByName(g.getItemName()), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()))
@@ -67,6 +68,24 @@ public class PurchaseOrderService {
     public String deletePurchaseOrder(Long id) {
         purchaseOrderRepository.deleteById(id);
         return "The PurchaseOrder deleted successfully";
+    }
+
+    @Transactional
+    public int getNextSequenceValue(String name) {
+        // Step 1: Update the value
+        jdbcTemplate.update(
+                "UPDATE sequence_counter SET next_val = next_val + 1 WHERE name = ?",
+                name
+        );
+
+        // Step 2: Retrieve the new value
+        Integer nextVal = jdbcTemplate.queryForObject(
+                "SELECT next_val FROM sequence_counter WHERE name = ?",
+                Integer.class,
+                name
+        );
+
+        return nextVal != null ? nextVal : 1;
     }
 
     public List<PurchaseOrder> getByMerchantId(Long id) {
