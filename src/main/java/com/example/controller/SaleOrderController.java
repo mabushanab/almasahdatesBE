@@ -25,7 +25,7 @@ public class SaleOrderController {
         return saleOrderService.createSaleOrder(saleOrderDto);
     }
 
-    @GetMapping("/productMaxPrice")
+    @GetMapping("/productMinPrice")
     public double getProductMaxPriceByName(@RequestParam String productName) {
         return saleOrderService.getMaxValue(productName);
     }

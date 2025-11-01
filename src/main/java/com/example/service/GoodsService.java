@@ -22,9 +22,9 @@ public class GoodsService {
         return goodsRepository.findByItemId(Itemid);
     }
 
-    public final double getMaxValue(String name) {
+    public final double getMinValue(String name) {
         return goodsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
-                .stream().mapToDouble(Goods::getPriceForGrams).max().orElse(0.0);
+                .stream().mapToDouble(Goods::getPriceForGrams).min().orElse(0.0);
     }
 }
 

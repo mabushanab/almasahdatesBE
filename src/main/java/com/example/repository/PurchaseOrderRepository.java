@@ -10,6 +10,8 @@ import java.util.List;
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
     List<PurchaseOrder> getByMerchantId(Long id);
 
+    PurchaseOrder getBypOId(String pOId);
+
 //    String findLastPoIdLike(@Param("prefix") String prefix);
 //    boolean existsByName(String name);
 

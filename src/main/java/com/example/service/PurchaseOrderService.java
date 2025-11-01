@@ -99,8 +99,14 @@ public class PurchaseOrderService {
         ));
 
     }
-    public double getMaxValue(String name){
-        return Math.round(goodsService.getMaxValue(name) * 100.00) /100.00;
+
+    public byte[] generateInvoice2(String sOId) {
+        return pdfService.generateInvoicePOs(purchaseOrderRepository.getBypOId(sOId).getMerchant().getName(),
+                purchaseOrderRepository.getBypOId(sOId).getGoods());
+    }
+
+    public double getMinValue(String name){
+        return Math.round(goodsService.getMinValue(name) * 100.00) /100.00;
     }
 
 //    public byte[] generateInvoice2(String customerName, double totalAmount) {

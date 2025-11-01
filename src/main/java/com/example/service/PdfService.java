@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.model.Goods;
 import com.example.model.Products;
 import com.example.model.PurchaseOrder;
 import com.example.model.SaleOrder;
@@ -65,6 +66,57 @@ public class PdfService {
             }
 
             double totalAmount = saleOrders.stream().mapToDouble(p -> p.getQuantity() * p.getPriceForItem()).sum();
+            document.add(table);
+            document.add(Chunk.NEWLINE);
+
+            addTotalSection(document, totalAmount, bold);
+            document.close();
+
+            return baos.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate sales invoice PDF", e);
+        }
+    }
+    public byte[] generateInvoicePOs(String customerName, List<Goods> saleOrders) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            Document document = new Document(PageSize.A4, 36, 36, 80, 60);
+            PdfWriter writer = PdfWriter.getInstance(document, baos);
+            writer.setPageEvent(new HeaderFooterPageEvent());
+            document.open();
+
+            BaseFont bf = loadBaseFont();
+            Font normal = new Font(bf, 12);
+            Font bold = new Font(bf, 14, Font.BOLD);
+            Font title = new Font(bf, 20, Font.BOLD);
+
+            // ==== Title ====
+            addCenteredTitle(document, "فاتورة مبيعات (Sales Invoice)", title);
+
+            // ==== Info ====
+            addInfoSection(document, "اسم الزبون: " + customerName,
+                    "التاريخ: " + LocalDate.now(), normal);
+
+            // ==== Table ====
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setWidths(new float[]{3f, 1.5f, 1.5f, 1.5f});
+            table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
+
+            table.addCell(createHeaderCell("المنتج", bold));
+            table.addCell(createHeaderCell("السعر الفردي", bold));
+            table.addCell(createHeaderCell("الكمية", bold));
+            table.addCell(createHeaderCell("الإجمالي", bold));
+
+//            List<Products> products = saleOrders.get(0).getProducts();
+            for (Goods product : saleOrders) {
+                table.addCell(createWrappedCell(product.getItem().getName(), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForGrams()), normal));
+                table.addCell(createWrappedCell(String.valueOf(product.getWeightInGrams()), normal));
+                table.addCell(createWrappedCell(
+                        String.format("%.2f", product.getPriceForGrams() * product.getWeightInGrams()), normal));
+            }
+
+            double totalAmount = saleOrders.stream().mapToDouble(p -> p.getPriceForGrams() * p.getWeightInGrams()).sum();
             document.add(table);
             document.add(Chunk.NEWLINE);
 

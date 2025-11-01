@@ -26,14 +26,14 @@ public class PurchaseOrderController {
         return purchaseOrderService.createPurchaseOrder(purchaseOrderDto);
     }
 
-    @GetMapping("/goodsMaxPrice")
-    public double getProductMaxPriceByName(@RequestParam String goodsName) {
-        return purchaseOrderService.getMaxValue(goodsName);
+    @GetMapping("/goodsMinPrice")
+    public double getProductMinPriceByName(@RequestParam String goodsName) {
+        return purchaseOrderService.getMinValue(goodsName);
     }
 
     @GetMapping("/invoice")
-    public ResponseEntity<byte[]> getInvoice(@RequestParam String name, @RequestParam double amount) {
-        byte[] pdf = purchaseOrderService.generateInvoice(name, amount);
+    public ResponseEntity<byte[]> getInvoice(@RequestParam String pOId) {
+        byte[] pdf = purchaseOrderService.generateInvoice2(pOId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
