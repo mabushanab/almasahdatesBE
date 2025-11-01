@@ -15,9 +15,16 @@ import java.util.List;
 public class GoodsService {
 
     private final GoodsRepository goodsRepository;
+    private final ItemService itemService;
+
 
     public List<Goods> getAllByItemId(Long Itemid) {
         return goodsRepository.findByItemId(Itemid);
+    }
+
+    public final double getMaxValue(String name) {
+        return goodsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
+                .stream().mapToDouble(Goods::getPriceForGrams).max().orElse(0.0);
     }
 }
 

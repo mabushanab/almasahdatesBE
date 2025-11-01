@@ -26,6 +26,10 @@ public class PurchaseOrderController {
         return purchaseOrderService.createPurchaseOrder(purchaseOrderDto);
     }
 
+    @GetMapping("/goodsMaxPrice")
+    public double getProductMaxPriceByName(@RequestParam String goodsName) {
+        return purchaseOrderService.getMaxValue(goodsName);
+    }
 
     @GetMapping("/invoice")
     public ResponseEntity<byte[]> getInvoice(@RequestParam String name, @RequestParam double amount) {

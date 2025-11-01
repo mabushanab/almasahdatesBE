@@ -23,6 +23,7 @@ public class PurchaseOrderService {
     private final ItemService itemService;
     private final PdfService pdfService;
     private final JdbcTemplate jdbcTemplate;
+    private final GoodsService goodsService;
 
 //    public PurchaseOrderDto getByName(String name) {
 //        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
@@ -93,10 +94,13 @@ public class PurchaseOrderService {
     }
 
     public byte[] generateInvoice(String customerName, double totalAmount) {
-        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
+        return pdfService.generateInvoice(customerName,Math.round(totalAmount * 100.00) /100.00 , getByMerchantId(
                 merchantService.getMerchantByName(customerName).getId()
         ));
 
+    }
+    public double getMaxValue(String name){
+        return Math.round(goodsService.getMaxValue(name) * 100.00) /100.00;
     }
 
 //    public byte[] generateInvoice2(String customerName, double totalAmount) {

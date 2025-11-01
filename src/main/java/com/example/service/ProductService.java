@@ -7,6 +7,7 @@ import com.example.repository.ProductsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -14,11 +15,20 @@ import java.util.List;
 public class ProductService {
 
     private final ProductsRepository productsRepository;
+    private final ItemService itemService;
 
 
     public List<Products> getAllByItemId(long Itemid) {
 
-        return productsRepository.findByItemId(Itemid);}}
+        return productsRepository.findByItemId(Itemid);
+    }
+
+    public final double getMaxValue(String name) {
+
+       return productsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
+                .stream().mapToDouble(Products::getPriceForItem).max().orElse(0.0);
+    }
+}
 //    }
 
 //    public GoodsDto getByName(String name) {
@@ -32,9 +42,9 @@ public class ProductService {
 //                map(goods -> new GoodsDto(goods.getName(), goods.getType(), goods.getSubtype(), goods.getDescr())).toList();
 //    }
 //
-////    public List<Goods> getAllProducts2() {
-////        return goodsRepository.findAll();
-////    }
+/// /    public List<Goods> getAllProducts2() {
+/// /        return goodsRepository.findAll();
+/// /    }
 //
 ////    public GoodsDto createGoods(GoodsDto dto) {
 ////        Goods goods = new Goods(dto.getName(),dto.getDesc(),dto.getType(),dto.getSubtype());

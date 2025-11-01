@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,14 +24,20 @@ public class SaleOrderService {
     private final ItemService itemService;
     private final PdfService pdfService;
     private final JdbcTemplate jdbcTemplate;
+    private final ProductService productService;
+    private final DecimalFormat df = new DecimalFormat("0.00");
 
     public List<SaleOrderDto> getAllSaleOrders() {
         return saleOrderRepository.findAll().stream().
                 map(saleOrder ->
-                        new SaleOrderDto(saleOrder.getSOId(), saleOrder.getCustomer().getName(), saleOrder.getProducts().stream().map(g -> new ProductDto(
+                        new SaleOrderDto(saleOrder.getSOId(), saleOrder.getCustomer().getName(),
+                                saleOrder.getProducts().stream().map(g -> new ProductDto(
                                 g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()
                         )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
                                 saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
+    }
+    public double getMaxValue(String name){
+        return Math.round(productService.getMaxValue(name) * 100.00) /100.00;
     }
 
     public String createSaleOrder(SaleOrderDto saleOrderDto) {

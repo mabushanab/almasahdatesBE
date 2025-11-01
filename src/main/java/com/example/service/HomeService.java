@@ -27,11 +27,11 @@ public class HomeService {
     private final GoodsService goodsService;
 
     public HomeDto getCreditDebitDetails() {
-        double poSum = purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum();
-        double poSumRemain = purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum();
-        double soSum = saleOrderService.getAllSaleOrders().stream().mapToDouble(SaleOrderDto::getTotalPrice).sum();
-        double soSumRemain = saleOrderService.getAllSaleOrders().stream().mapToDouble(SaleOrderDto::getRemainAmount).sum();
-
+        double poSum = Math.round(purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum() * 100.00) /100.00;
+        double poSumRemain = Math.round(purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum() * 100.00) /100.00;
+        double soSum = Math.round(saleOrderService.getAllSaleOrders().stream().mapToDouble(SaleOrderDto::getTotalPrice).sum() * 100.00) /100.00;
+        double soSumRemain = Math.round(saleOrderService.getAllSaleOrders().stream().mapToDouble(SaleOrderDto::getRemainAmount).sum() * 100.00) /100.00;
+//        Math.round(totalAmount * 100.00) /100.00
 
         Map<String, Double> avgProductPrice = itemService.getAllItemsEntities()
                 .stream()

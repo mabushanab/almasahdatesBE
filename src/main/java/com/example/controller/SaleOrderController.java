@@ -25,6 +25,10 @@ public class SaleOrderController {
         return saleOrderService.createSaleOrder(saleOrderDto);
     }
 
+    @GetMapping("/productMaxPrice")
+    public double getProductMaxPriceByName(@RequestParam String productName) {
+        return saleOrderService.getMaxValue(productName);
+    }
     @GetMapping("/invoice")
     public ResponseEntity<byte[]> getInvoice(@RequestParam String sOId) {
         byte[] pdf = saleOrderService.generateInvoice2(sOId);
