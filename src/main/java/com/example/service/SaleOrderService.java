@@ -116,4 +116,10 @@ public class SaleOrderService {
 
         } else return "Amount is bigger than Remaining.";
     }
+    public String payAllRemainAmount(String sOId) {
+        SaleOrder saleOrder = saleOrderRepository.getBysOId(sOId);
+        saleOrder.setRemainAmount(0);
+        saleOrderRepository.save(saleOrder);
+        return "The SO: " + sOId + " amount is fully payed.";
+    }
 }

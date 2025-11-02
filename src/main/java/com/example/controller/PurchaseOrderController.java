@@ -46,4 +46,8 @@ public class PurchaseOrderController {
     public String payRemainAmount(@RequestParam String pOId, @RequestParam double amount) {
         return purchaseOrderService.payRemainAmount(pOId,amount);
     }
+    @GetMapping("/payAllRemainAmount")
+    public String payAllRemainAmount(@RequestParam String pOId) {
+        return purchaseOrderService.payAllRemainAmount(pOId);
+    }
 }

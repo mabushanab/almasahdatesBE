@@ -108,8 +108,8 @@ public class PurchaseOrderService {
         if (purchaseOrder.getRemainAmount() > amount) {
             purchaseOrder.setRemainAmount((purchaseOrder.getRemainAmount() - amount));
             purchaseOrderRepository.save(purchaseOrder);
-            return "The PO: " + pOId + " amount " + amount + "is payed.";}
-        else if (purchaseOrder.getRemainAmount() == amount) {
+            return "The PO: " + pOId + " amount " + amount + "is payed.";
+        } else if (purchaseOrder.getRemainAmount() == amount) {
             purchaseOrder.setRemainAmount((purchaseOrder.getRemainAmount() - amount));
             purchaseOrderRepository.save(purchaseOrder);
             return "The PO: " + pOId + " fully amount is payed.";
@@ -117,4 +117,10 @@ public class PurchaseOrderService {
         } else return "Amount is bigger than Remaining.";
     }
 
+    public String payAllRemainAmount(String pOId) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.getBypOId(pOId);
+        purchaseOrder.setRemainAmount(0);
+        purchaseOrderRepository.save(purchaseOrder);
+        return "The PO: " + pOId + " amount is fully payed.";
+    }
 }

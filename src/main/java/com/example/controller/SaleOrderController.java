@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.dto.SaleOrderDto;
+import com.example.model.SaleOrder;
 import com.example.service.SaleOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
@@ -45,8 +46,14 @@ public class SaleOrderController {
 
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
+
     @GetMapping("/payRemainAmount")
     public String payRemainAmount(@RequestParam String sOId, @RequestParam double amount) {
         return saleOrderService.payRemainAmount(sOId,amount);
+    }
+
+    @GetMapping("/payAllRemainAmount")
+    public String payAllRemainAmount(@RequestParam String sOId) {
+        return saleOrderService.payAllRemainAmount(sOId);
     }
 }

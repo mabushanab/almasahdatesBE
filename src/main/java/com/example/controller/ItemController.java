@@ -46,5 +46,9 @@ public class ItemController {
     public String setSalePrice(@RequestParam String name, @RequestParam double price) {
         return itemService.setSalePrice(name,price);
     }
+    @GetMapping("/getSalePrice")
+    public double getSalePrice(@RequestParam String name) {
+        return itemService.getSalePrice(name);
+    }
 
 }
