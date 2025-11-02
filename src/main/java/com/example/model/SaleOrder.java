@@ -32,8 +32,8 @@ public class SaleOrder {
     private List<Products> products;
 
     private LocalDate date;
-    private float totalPrice;
-    private float remainAmount;
+    private double totalPrice;
+    private double remainAmount;
     private String notes;
 
 }

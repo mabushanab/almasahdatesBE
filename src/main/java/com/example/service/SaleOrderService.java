@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.dto.ProductDto;
 import com.example.dto.SaleOrderDto;
 import com.example.model.Products;
+import com.example.model.PurchaseOrder;
 import com.example.model.SaleOrder;
 import com.example.repository.SaleOrderRepository;
 import jakarta.transaction.Transactional;
@@ -35,9 +36,6 @@ public class SaleOrderService {
                                 g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()
                         )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
                                 saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
-    }
-    public double getMaxValue(String name){
-        return Math.round(productService.getMaxValue(name) * 100.00) /100.00;
     }
 
     public String createSaleOrder(SaleOrderDto saleOrderDto) {
@@ -95,5 +93,27 @@ public class SaleOrderService {
     public byte[] generateInvoice2(String sOId) {
         return pdfService.generateInvoiceSOs(saleOrderRepository.getBysOId(sOId).getCustomer().getName(),
                 saleOrderRepository.getBysOId(sOId).getProducts());
+    }
+    public double getMaxValue(String name){
+        return Math.round(productService.getMaxValue(name) * 100.00) /100.00;
+    }
+
+    public double productPrice(String name){
+        return Math.round(itemService.getSalePrice(name) * 100.00) /100.00;
+    }
+
+
+    public String payRemainAmount(String sOId, double amount) {
+        SaleOrder saleOrder = saleOrderRepository.getBysOId(sOId);
+        if (saleOrder.getRemainAmount() > amount) {
+            saleOrder.setRemainAmount((saleOrder.getRemainAmount() - amount));
+            saleOrderRepository.save(saleOrder);
+            return "The SO: " + sOId + " amount " + amount + "is payed.";}
+        else if (saleOrder.getRemainAmount() == amount) {
+            saleOrder.setRemainAmount((saleOrder.getRemainAmount() - amount));
+            saleOrderRepository.save(saleOrder);
+            return "The SO: " + sOId + " fully amount is payed.";
+
+        } else return "Amount is bigger than Remaining.";
     }
 }

@@ -15,37 +15,10 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-//    public List<Product> getAllUsers() {
-//        return productRepository.findAll()
-//                .stream()
-//                .map(p -> new UserDto(p.getUsername(), p.getRole()))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public UserDto getUserById(Long id) {
-//        User user = productRepository.findById(id)
-//                .orElseThrow(() -> new UserNotFoundException("User not found"));
-//        return new UserDto(user.getUsername(), user.getRole());
-//    }
-//
-//    public UserDto createUser(UserDto dto) {
-//        User user = new User();
-//        user.setUsername(dto.getUsername());
-//        user.setRole(dto.getRole());
-//        productRepository.save(user);
-//        return new UserDto(user.getUsername(), user.getRole());
-//    }
-
-//    public ProductDto getProductByName(String name) {
-//    }
-//
-//    public ProductDto getProductById(Long id) {
-//    }
-
     public ItemDto getByName(String name) {
         Item item = itemRepository.findByName(name);
 
-        return new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr());
+        return new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubtype(), item.getDescr());
     }
 
     public Item getEntityByName(String name) {
@@ -59,18 +32,8 @@ public class ItemService {
 
     public List<ItemDto> getAllItems() {
         return itemRepository.findAll().stream().
-                map(item -> new ItemDto(item.getName(), item.getType(), item.getSubtype(), item.getDescr())).toList();
+                map(item -> new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubtype(), item.getDescr())).toList();
     }
-
-//    public List<Item> getAllProducts2() {
-//        return itemRepository.findAll();
-//    }
-
-//    public ItemDto createItem(ItemDto dto) {
-//        Item item = new Item(dto.getName(),dto.getDesc(),dto.getType(),dto.getSubtype());
-//        itemRepository.save(new Item(dto.getName(),dto.getDesc(),dto.getType(),dto.getSubtype()));
-//        return new ItemDto(item);
-//    }
 
     public String createItem(Item item) {
         if (itemRepository.existsByName(item.getName()))
@@ -94,5 +57,16 @@ public class ItemService {
             return "The Items: " + p + " saved successfully";
         }
 
+    }
+
+    public String setSalePrice(String name, double price) {
+        Item item = itemRepository.findByName(name);
+        item.setSalePrice(price);
+        itemRepository.save(item);
+        return "The item " + name + " new price is " + price;
+    }
+
+    public double getSalePrice(String name) {
+        return itemRepository.findByName(name).getSalePrice();
     }
 }

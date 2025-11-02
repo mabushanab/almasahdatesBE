@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.dto.ItemDto;
 import com.example.model.Item;
 import com.example.service.ItemService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,19 +42,9 @@ public class ItemController {
         return itemService.createItemList(items);
     }
 
-//    @GetMapping("/{id}")
-//    public ProductDto getUser(@PathVariable Long id) {
-//        return productService.getProductById(id);
-//    }
-//
+    @GetMapping("/setSalePrice")
+    public String setSalePrice(@RequestParam String name, @RequestParam double price) {
+        return itemService.setSalePrice(name,price);
+    }
 
-//    @GetMapping
-//    public List<ItemDto> getAllProducts() {
-//        return itemService.getAllItems();
-//    }
-
-//    @PostMapping
-//    public ItemDto createUser(@RequestBody ItemDto dto) {
-//        return itemService.createItem(dto);
-//    }
 }

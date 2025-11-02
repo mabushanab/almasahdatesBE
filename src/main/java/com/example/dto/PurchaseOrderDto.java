@@ -22,7 +22,7 @@ public class PurchaseOrderDto {
     private String merchantName;
     private List<GoodsDto> goods;
     private LocalDate date;
-    private float totalPrice;
-    private float remainAmount;
+    private double totalPrice;
+    private double remainAmount;
     private String notes;
 }

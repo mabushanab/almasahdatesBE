@@ -19,6 +19,7 @@ public class Item {
     @Column(unique = true)
     private String name;
 
+    private double salePrice;
     private String type;
     private String subtype;
     private String descr;

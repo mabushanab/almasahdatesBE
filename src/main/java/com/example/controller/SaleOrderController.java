@@ -29,6 +29,12 @@ public class SaleOrderController {
     public double getProductMaxPriceByName(@RequestParam String productName) {
         return saleOrderService.getMaxValue(productName);
     }
+
+    @GetMapping("/productPrice")
+    public double productPrice(@RequestParam String productName) {
+        return saleOrderService.productPrice(productName);
+    }
+
     @GetMapping("/invoice")
     public ResponseEntity<byte[]> getInvoice(@RequestParam String sOId) {
         byte[] pdf = saleOrderService.generateInvoice2(sOId);
@@ -39,19 +45,8 @@ public class SaleOrderController {
 
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
-
-//    @GetMapping("/{name}")
-//    public SaleOrderDto getUser(@PathVariable String name) {
-//        return saleOrderService.getByName(name);
-//    }
-
-//    @DeleteMapping("/{name}")
-//    public String deleteItem(@PathVariable String name) {
-//        return saleOrderService.deleteSaleOrder(name);
-//    }
-
-//    @PostMapping("/createList")
-//    public String createProduct(@RequestBody List<SaleOrder> saleOrders) {
-//        return saleOrderService.createSaleOrderList(saleOrders);
-//    }
+    @GetMapping("/payRemainAmount")
+    public String payRemainAmount(@RequestParam String sOId, @RequestParam double amount) {
+        return saleOrderService.payRemainAmount(sOId,amount);
+    }
 }

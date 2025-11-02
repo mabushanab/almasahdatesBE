@@ -42,18 +42,8 @@ public class PurchaseOrderController {
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
 
-//    @GetMapping("/{name}")
-//    public PurchaseOrderDto getUser(@PathVariable String name) {
-//        return purchaseOrderService.getByName(name);
-//    }
-
-//    @DeleteMapping("/{name}")
-//    public String deleteItem(@PathVariable String name) {
-//        return purchaseOrderService.deletePurchaseOrder(name);
-//    }
-
-//    @PostMapping("/createList")
-//    public String createProduct(@RequestBody List<PurchaseOrder> purchaseOrders) {
-//        return purchaseOrderService.createPurchaseOrderList(purchaseOrders);
-//    }
+    @GetMapping("/payRemainAmount")
+    public String payRemainAmount(@RequestParam String pOId, @RequestParam double amount) {
+        return purchaseOrderService.payRemainAmount(pOId,amount);
+    }
 }

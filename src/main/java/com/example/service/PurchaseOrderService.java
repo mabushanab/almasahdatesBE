@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.dto.GoodsDto;
 import com.example.dto.PurchaseOrderDto;
 import com.example.model.Goods;
+import com.example.model.Item;
 import com.example.model.PurchaseOrder;
 import com.example.repository.PurchaseOrderRepository;
 import jakarta.transaction.Transactional;
@@ -25,13 +26,6 @@ public class PurchaseOrderService {
     private final JdbcTemplate jdbcTemplate;
     private final GoodsService goodsService;
 
-//    public PurchaseOrderDto getByName(String name) {
-//        PurchaseOrder purchaseOrder = purchaseOrderRepository.findByName(name);
-//
-//           List<Goods> goods =
-//        return new PurchaseOrderDto(purchaseOrder.getMerchant(), purchaseOrder.getGoods(),purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
-//                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes());
-//    }
 
     public List<PurchaseOrderDto> getAllPurchaseOrders() {
         return purchaseOrderRepository.findAll().stream().
@@ -46,7 +40,7 @@ public class PurchaseOrderService {
     public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
 
         long nextVal = getNextSequenceValue("purchase_order");
-        String poId = "PO-" + LocalDate.now().toString().replace("-","")
+        String poId = "PO-" + LocalDate.now().toString().replace("-", "")
                 + "-" + String.format("%04d", nextVal);
 
 
@@ -94,7 +88,7 @@ public class PurchaseOrderService {
     }
 
     public byte[] generateInvoice(String customerName, double totalAmount) {
-        return pdfService.generateInvoice(customerName,Math.round(totalAmount * 100.00) /100.00 , getByMerchantId(
+        return pdfService.generateInvoice(customerName, Math.round(totalAmount * 100.00) / 100.00, getByMerchantId(
                 merchantService.getMerchantByName(customerName).getId()
         ));
 
@@ -105,22 +99,22 @@ public class PurchaseOrderService {
                 purchaseOrderRepository.getBypOId(sOId).getGoods());
     }
 
-    public double getMinValue(String name){
-        return Math.round(goodsService.getMinValue(name) * 100.00) /100.00;
+    public double getMinValue(String name) {
+        return Math.round(goodsService.getMinValue(name) * 100.00) / 100.00;
     }
 
-//    public byte[] generateInvoice2(String customerName, double totalAmount) {
-//
-//        getByMerchantId(merchantService.getMerchantByName(customerName).getId())
-//                .stream().collect(Collectors.toMap(
-//                 po -> po.getTotalPrice(),
-//                        )
-//                )
-//
-//
-//        return pdfService.generateInvoice(customerName, totalAmount, getByMerchantId(
-//                merchantService.getMerchantByName(customerName).getId()
-//        ));
-//
-//    }
+    public String payRemainAmount(String pOId, double amount) {
+        PurchaseOrder purchaseOrder = purchaseOrderRepository.getBypOId(pOId);
+        if (purchaseOrder.getRemainAmount() > amount) {
+            purchaseOrder.setRemainAmount((purchaseOrder.getRemainAmount() - amount));
+            purchaseOrderRepository.save(purchaseOrder);
+            return "The PO: " + pOId + " amount " + amount + "is payed.";}
+        else if (purchaseOrder.getRemainAmount() == amount) {
+            purchaseOrder.setRemainAmount((purchaseOrder.getRemainAmount() - amount));
+            purchaseOrderRepository.save(purchaseOrder);
+            return "The PO: " + pOId + " fully amount is payed.";
+
+        } else return "Amount is bigger than Remaining.";
+    }
+
 }

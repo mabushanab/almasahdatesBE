@@ -11,6 +11,7 @@ public class ItemDto {
         this.name = name;
     }
     private String name;
+    private double salePrice;
     private String type;
     private String subtype;
     private String desc;
