@@ -33,7 +33,7 @@ public class SaleOrderService {
                 map(saleOrder ->
                         new SaleOrderDto(saleOrder.getSOId(), saleOrder.getCustomer().getName(),
                                 saleOrder.getProducts().stream().map(g -> new ProductDto(
-                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()
+                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(),g.getDiscount(), g.getNotes()
                         )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
                                 saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
     }
@@ -46,7 +46,7 @@ public class SaleOrderService {
         saleOrder.setSOId(soId);
         saleOrder.setCustomer(customerService.getCustomerByName(saleOrderDto.getCustomerName()));
         saleOrder.setProducts(saleOrderDto.getProducts().stream().map(
-                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getNotes()))
+                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(),g.getDiscount(), g.getNotes()))
                 .toList());
         saleOrder.setDate(LocalDate.now());
         saleOrder.setRemainAmount(saleOrderDto.getRemainAmount());
@@ -84,15 +84,9 @@ public class SaleOrderService {
         return saleOrderRepository.getByCustomerId(id);
     }
 
-    public byte[] generateInvoice(String customerName) {
-        return pdfService.generateInvoiceSOs(customerName, saleOrderRepository
-                .getByCustomerId(customerService.getCustomerByName(customerName)
-                        .getId()).get(0).getProducts());
-    }
-
-    public byte[] generateInvoice2(String sOId) {
-        return pdfService.generateInvoiceSOs(saleOrderRepository.getBysOId(sOId).getCustomer().getName(),
-                saleOrderRepository.getBysOId(sOId).getProducts());
+    public byte[] generateInvoice(String sOId) {
+        return pdfService.generateInvoiceSOs(
+                saleOrderRepository.getBysOId(sOId));
     }
     public double getMaxValue(String name){
         return Math.round(productService.getMaxValue(name) * 100.00) /100.00;

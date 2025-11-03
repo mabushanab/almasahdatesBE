@@ -14,6 +14,7 @@ public class GoodsDto {
     private String itemName;
     private float priceForGrams;
     private float weightInGrams;
+    private int discount;
     private String notes;
 
 

@@ -33,7 +33,7 @@ public class PurchaseOrderController {
 
     @GetMapping("/invoice")
     public ResponseEntity<byte[]> getInvoice(@RequestParam String pOId) {
-        byte[] pdf = purchaseOrderService.generateInvoice2(pOId);
+        byte[] pdf = purchaseOrderService.generateInvoice(pOId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

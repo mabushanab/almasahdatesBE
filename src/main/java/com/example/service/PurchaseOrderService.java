@@ -31,7 +31,7 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
                         new PurchaseOrderDto(purchaseOrder.getPOId(), purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
-                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()
+                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(),g.getDiscount(), g.getNotes()
                         )).toList(), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
                                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
     }
@@ -49,7 +49,7 @@ public class PurchaseOrderService {
         purchaseOrder.setPOId(poId);
         purchaseOrder.setMerchant(merchantService.getMerchantByName(purchaseOrderDto.getMerchantName()));
         purchaseOrder.setGoods(purchaseOrderDto.getGoods().stream().map(
-                        g -> new Goods(itemService.getEntityByName(g.getItemName()), g.getPriceForGrams(), g.getWeightInGrams(), g.getNotes()))
+                        g -> new Goods(itemService.getEntityByName(g.getItemName()), g.getPriceForGrams(), g.getWeightInGrams(), g.getDiscount(), g.getNotes()))
                 .toList());
         purchaseOrder.setDate(LocalDate.now());
         purchaseOrder.setRemainAmount(purchaseOrderDto.getRemainAmount());
@@ -87,16 +87,8 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.getByMerchantId(id);
     }
 
-    public byte[] generateInvoice(String customerName, double totalAmount) {
-        return pdfService.generateInvoice(customerName, Math.round(totalAmount * 100.00) / 100.00, getByMerchantId(
-                merchantService.getMerchantByName(customerName).getId()
-        ));
-
-    }
-
-    public byte[] generateInvoice2(String sOId) {
-        return pdfService.generateInvoicePOs(purchaseOrderRepository.getBypOId(sOId).getMerchant().getName(),
-                purchaseOrderRepository.getBypOId(sOId).getGoods());
+    public byte[] generateInvoice(String pOId) {
+        return pdfService.generateInvoicePOs(purchaseOrderRepository.getBypOId(pOId));
     }
 
     public double getMinValue(String name) {

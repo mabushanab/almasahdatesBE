@@ -26,11 +26,13 @@ public class Goods {
     private float priceForGrams;
     private float weightInGrams;
     private String notes;
+    private int discount;
 
-    public Goods(Item item, float priceForGrams, float weightInGrams, String notes) {
+    public Goods(Item item, float priceForGrams, float weightInGrams,int discount, String notes) {
         this.item = item;
         this.priceForGrams = priceForGrams;
         this.weightInGrams = weightInGrams;
+        this.discount = discount;
         this.notes = notes;
     }
 }

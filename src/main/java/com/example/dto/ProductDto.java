@@ -17,5 +17,6 @@ public class ProductDto {
     private float priceForItem;
     private int quantity;
     private float boxCost;
+    private int discount;
     private String notes;
 }

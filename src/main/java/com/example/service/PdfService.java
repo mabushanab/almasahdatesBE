@@ -23,10 +23,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PdfService {
 
-    private final MerchantService merchantService;
 
     // =================== SALE INVOICE ===================
-    public byte[] generateInvoiceSOs(String customerName, List<Products> saleOrders) {
+    public byte[] generateInvoiceSOs(SaleOrder saleOrders) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4, 36, 36, 80, 60);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
@@ -42,34 +41,42 @@ public class PdfService {
             addCenteredTitle(document, "فاتورة مبيعات (Sales Invoice)", title);
 
             // ==== Info ====
-            addInfoSection(document, "اسم الزبون: " + customerName,
-                    "التاريخ: " + LocalDate.now(), normal);
+            addInfoSection(document, "اسم المورد: " + saleOrders.getCustomer().getName(),
+                    "   تاريخ الفاتورة: " + saleOrders.getDate() + "   التاريخ: " + LocalDate.now(), normal);
 
             // ==== Table ====
-            PdfPTable table = new PdfPTable(4);
+            PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
-            table.setWidths(new float[]{3f, 1.5f, 1.5f, 1.5f});
+            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f, 1.5f, 2.0f});
             table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 
             table.addCell(createHeaderCell("المنتج", bold));
-            table.addCell(createHeaderCell("السعر الفردي", bold));
             table.addCell(createHeaderCell("الكمية", bold));
+            table.addCell(createHeaderCell("السعر الفردي قبل الضريبة", bold));
+            table.addCell(createHeaderCell("السعر الفردي بعد الضريبة", bold));
+            table.addCell(createHeaderCell("الخصم (%)", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
 
-//            List<Products> products = saleOrders.get(0).getProducts();
-            for (Products product : saleOrders) {
+            double totalBeforeDiscount=0;
+            List<Products> products = saleOrders.getProducts();
+            for (Products product : products) {
                 table.addCell(createWrappedCell(product.getItem().getName(), normal));
-                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
                 table.addCell(createWrappedCell(String.valueOf(product.getQuantity()), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()/1.02), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
+                table.addCell(createWrappedCell(String.valueOf(product.getDiscount()), normal));
+                double d = product.getPriceForItem() * product.getQuantity();
                 table.addCell(createWrappedCell(
-                        String.format("%.2f", product.getPriceForItem() * product.getQuantity()), normal));
+                        String.format("%.2f", d - d * (product.getDiscount()/100.0)), normal));
+                totalBeforeDiscount+=product.getPriceForItem() * product.getQuantity();
             }
 
-            double totalAmount = saleOrders.stream().mapToDouble(p -> p.getQuantity() * p.getPriceForItem()).sum();
             document.add(table);
             document.add(Chunk.NEWLINE);
 
-            addTotalSection(document, totalAmount, bold);
+            addTotalSection(document, totalBeforeDiscount,"المجموع قبل الخصم", normal);
+            addTotalSection(document, saleOrders.getTotalPrice(),"المجموع بعد الخصم", normal);
+
             document.close();
 
             return baos.toByteArray();
@@ -77,7 +84,8 @@ public class PdfService {
             throw new RuntimeException("Failed to generate sales invoice PDF", e);
         }
     }
-    public byte[] generateInvoicePOs(String customerName, List<Goods> saleOrders) {
+
+    public byte[] generateInvoicePOs(PurchaseOrder purchaseOrder) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4, 36, 36, 80, 60);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
@@ -90,86 +98,45 @@ public class PdfService {
             Font title = new Font(bf, 20, Font.BOLD);
 
             // ==== Title ====
-            addCenteredTitle(document, "فاتورة مبيعات (Sales Invoice)", title);
+            addCenteredTitle(document, "فاتورة مشتريات (Purchase Invoice)", title);
 
             // ==== Info ====
-            addInfoSection(document, "اسم الزبون: " + customerName,
-                    "التاريخ: " + LocalDate.now(), normal);
+            addInfoSection(document, "اسم المورد: " + purchaseOrder.getMerchant().getName(),
+                    "   تاريخ الفاتورة: " + purchaseOrder.getDate() + "   التاريخ: " + LocalDate.now(), normal);
 
             // ==== Table ====
-            PdfPTable table = new PdfPTable(4);
+            PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
-            table.setWidths(new float[]{3f, 1.5f, 1.5f, 1.5f});
+            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f,1.5f,2.0f});
             table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 
             table.addCell(createHeaderCell("المنتج", bold));
-            table.addCell(createHeaderCell("السعر الفردي", bold));
             table.addCell(createHeaderCell("الكمية", bold));
+            table.addCell(createHeaderCell("السعر الفردي قبل الضريبة", bold));
+            table.addCell(createHeaderCell("السعر الفردي بعد الضريبة", bold));
+            table.addCell(createHeaderCell("الخصم (%)", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
-
-//            List<Products> products = saleOrders.get(0).getProducts();
-            for (Goods product : saleOrders) {
-                table.addCell(createWrappedCell(product.getItem().getName(), normal));
-                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForGrams()), normal));
-                table.addCell(createWrappedCell(String.valueOf(product.getWeightInGrams()), normal));
+            List<Goods> goods = purchaseOrder.getGoods();
+            for (Goods good : goods) {
+                table.addCell(createWrappedCell(good.getItem().getName(), normal));
+                table.addCell(createWrappedCell(String.valueOf(good.getWeightInGrams()), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams()/1.02), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams()), normal));
+                table.addCell(createWrappedCell(good.getDiscount() + "%", normal));
+                double d = good.getPriceForGrams() * good.getWeightInGrams();
                 table.addCell(createWrappedCell(
-                        String.format("%.2f", product.getPriceForGrams() * product.getWeightInGrams()), normal));
+                        String.format("%.2f", d - d * (good.getDiscount()/100.0)), normal));
             }
 
-            double totalAmount = saleOrders.stream().mapToDouble(p -> p.getPriceForGrams() * p.getWeightInGrams()).sum();
             document.add(table);
             document.add(Chunk.NEWLINE);
 
-            addTotalSection(document, totalAmount, bold);
+            addTotalSection(document, purchaseOrder.getTotalPrice(),"المحموع الكلي: ", bold);
             document.close();
 
             return baos.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate sales invoice PDF", e);
-        }
-    }
-
-    // =================== PURCHASE INVOICE ===================
-    public byte[] generateInvoice(String customerName, double totalAmount, List<PurchaseOrder> purchaseOrders) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            Document document = new Document(PageSize.A4, 36, 36, 80, 60);
-            PdfWriter writer = PdfWriter.getInstance(document, baos);
-            writer.setPageEvent(new HeaderFooterPageEvent());
-            document.open();
-
-            BaseFont bf = loadBaseFont();
-            Font normal = new Font(bf, 12);
-            Font bold = new Font(bf, 14, Font.BOLD);
-            Font title = new Font(bf, 20, Font.BOLD);
-
-            addCenteredTitle(document, "فاتورة مشتريات (Purchase Invoice)", title);
-            addInfoSection(document, "اسم المورد: " + customerName,
-                    "التاريخ: " + LocalDate.now(), normal);
-
-            PdfPTable table = new PdfPTable(3);
-            table.setWidthPercentage(100);
-            table.setWidths(new float[]{2f, 1.5f, 1.5f});
-            table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-
-            table.addCell(createHeaderCell("التاريخ", bold));
-            table.addCell(createHeaderCell("المجموع (JOD)", bold));
-            table.addCell(createHeaderCell("رقم الطلب", bold));
-
-            for (PurchaseOrder po : purchaseOrders) {
-                table.addCell(createWrappedCell(po.getDate().toString(), normal));
-                table.addCell(createWrappedCell(String.format("%.2f", po.getTotalPrice()), normal));
-                table.addCell(createWrappedCell(String.valueOf(po.getId()), normal));
-            }
-
-            document.add(table);
-            document.add(Chunk.NEWLINE);
-
-            addTotalSection(document, totalAmount, bold);
-            document.close();
-
-            return baos.toByteArray();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to generate purchase invoice PDF", e);
         }
     }
 
@@ -209,17 +176,17 @@ public class PdfService {
         document.add(Chunk.NEWLINE);
     }
 
-    private void addTotalSection(Document document, double total, Font font) throws DocumentException {
+    private void addTotalSection(Document document, double total,String s, Font font) throws DocumentException {
         PdfPTable totalTable = new PdfPTable(2);
-        totalTable.setWidthPercentage(40);
+        totalTable.setWidthPercentage(50);
         totalTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
         totalTable.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
-
-        PdfPCell label = new PdfPCell(new Phrase("المجموع الكلي:", font));
+//        font.setSize(10);
+        PdfPCell label = new PdfPCell(new Phrase(s, font));
         label.setBorder(Rectangle.NO_BORDER);
         label.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-        PdfPCell value = new PdfPCell(new Phrase(String.format("%.2f JOD", total), font));
+        PdfPCell value = new PdfPCell(new Phrase(String.format("%.2f JOD", total),  font));
         value.setBorder(Rectangle.NO_BORDER);
         value.setHorizontalAlignment(Element.ALIGN_LEFT);
 
