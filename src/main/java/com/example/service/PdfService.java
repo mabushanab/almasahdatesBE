@@ -57,25 +57,30 @@ public class PdfService {
             table.addCell(createHeaderCell("الخصم (%)", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
 
-            double totalBeforeDiscount=0;
+            double totalBeforeDiscount = 0;
+            boolean f = true;
             List<Products> products = saleOrders.getProducts();
             for (Products product : products) {
                 table.addCell(createWrappedCell(product.getItem().getName(), normal));
                 table.addCell(createWrappedCell(String.valueOf(product.getQuantity()), normal));
-                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()/1.02), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem() / 1.02), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
                 table.addCell(createWrappedCell(String.valueOf(product.getDiscount()), normal));
+                if (product.getDiscount() == 0)
+                    f = false;
                 double d = product.getPriceForItem() * product.getQuantity();
                 table.addCell(createWrappedCell(
-                        String.format("%.2f", d - d * (product.getDiscount()/100.0)), normal));
-                totalBeforeDiscount+=product.getPriceForItem() * product.getQuantity();
+                        String.format("%.2f", d - d * (product.getDiscount() / 100.0)), normal));
+                totalBeforeDiscount += d;
             }
 
             document.add(table);
             document.add(Chunk.NEWLINE);
 
-            addTotalSection(document, totalBeforeDiscount,"المجموع قبل الخصم", normal);
-            addTotalSection(document, saleOrders.getTotalPrice(),"المجموع بعد الخصم", normal);
+            if (f) {
+                addTotalSection(document, totalBeforeDiscount, "المجموع قبل الخصم", normal);
+                addTotalSection(document, saleOrders.getTotalPrice(), "المجموع بعد الخصم", normal);
+            } else addTotalSection(document, totalBeforeDiscount, "المجموع: ", normal);
 
             document.close();
 
@@ -107,7 +112,7 @@ public class PdfService {
             // ==== Table ====
             PdfPTable table = new PdfPTable(6);
             table.setWidthPercentage(100);
-            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f,1.5f,2.0f});
+            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f, 1.5f, 2.0f});
             table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 
             table.addCell(createHeaderCell("المنتج", bold));
@@ -120,18 +125,18 @@ public class PdfService {
             for (Goods good : goods) {
                 table.addCell(createWrappedCell(good.getItem().getName(), normal));
                 table.addCell(createWrappedCell(String.valueOf(good.getWeightInGrams()), normal));
-                table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams()/1.02), normal));
+                table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams() / 1.02), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams()), normal));
                 table.addCell(createWrappedCell(good.getDiscount() + "%", normal));
                 double d = good.getPriceForGrams() * good.getWeightInGrams();
                 table.addCell(createWrappedCell(
-                        String.format("%.2f", d - d * (good.getDiscount()/100.0)), normal));
+                        String.format("%.2f", d - d * (good.getDiscount() / 100.0)), normal));
             }
 
             document.add(table);
             document.add(Chunk.NEWLINE);
 
-            addTotalSection(document, purchaseOrder.getTotalPrice(),"المحموع الكلي: ", bold);
+            addTotalSection(document, purchaseOrder.getTotalPrice(), "المحموع الكلي: ", bold);
             document.close();
 
             return baos.toByteArray();
@@ -176,7 +181,7 @@ public class PdfService {
         document.add(Chunk.NEWLINE);
     }
 
-    private void addTotalSection(Document document, double total,String s, Font font) throws DocumentException {
+    private void addTotalSection(Document document, double total, String s, Font font) throws DocumentException {
         PdfPTable totalTable = new PdfPTable(2);
         totalTable.setWidthPercentage(50);
         totalTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -186,7 +191,7 @@ public class PdfService {
         label.setBorder(Rectangle.NO_BORDER);
         label.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
-        PdfPCell value = new PdfPCell(new Phrase(String.format("%.2f JOD", total),  font));
+        PdfPCell value = new PdfPCell(new Phrase(String.format("%.2f JOD", total), font));
         value.setBorder(Rectangle.NO_BORDER);
         value.setHorizontalAlignment(Element.ALIGN_LEFT);
 
