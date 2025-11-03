@@ -58,7 +58,7 @@ public class PdfService {
             table.addCell(createHeaderCell("الإجمالي", bold));
 
             double totalBeforeDiscount = 0;
-            boolean f = true;
+            boolean discount = true;
             List<Products> products = saleOrders.getProducts();
             for (Products product : products) {
                 table.addCell(createWrappedCell(product.getItem().getName(), normal));
@@ -66,8 +66,8 @@ public class PdfService {
                 table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem() / 1.02), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", product.getPriceForItem()), normal));
                 table.addCell(createWrappedCell(String.valueOf(product.getDiscount()), normal));
-                if (product.getDiscount() == 0)
-                    f = false;
+                if (product.getDiscount() != 0 || discount)
+                    discount = false;
                 double d = product.getPriceForItem() * product.getQuantity();
                 table.addCell(createWrappedCell(
                         String.format("%.2f", d - d * (product.getDiscount() / 100.0)), normal));
@@ -77,7 +77,7 @@ public class PdfService {
             document.add(table);
             document.add(Chunk.NEWLINE);
 
-            if (f) {
+            if (discount) {
                 addTotalSection(document, totalBeforeDiscount, "المجموع قبل الخصم", normal);
                 addTotalSection(document, saleOrders.getTotalPrice(), "المجموع بعد الخصم", normal);
             } else addTotalSection(document, totalBeforeDiscount, "المجموع: ", normal);
