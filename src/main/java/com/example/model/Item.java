@@ -21,7 +21,7 @@ public class Item {
 
     private double salePrice;
     private String type;
-    private String subtype;
+    private String subType;
     private String descr;
 
 }

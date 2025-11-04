@@ -41,7 +41,7 @@ public class PdfService {
             addCenteredTitle(document, "فاتورة مبيعات (Sales Invoice)", title);
 
             // ==== Info ====
-            addInfoSection(document, "اسم المورد: " + saleOrders.getCustomer().getName(),
+            addInfoSection(document, "اسم الزبون: " + saleOrders.getCustomer().getName(),
                     "   تاريخ الفاتورة: " + saleOrders.getDate() + "   التاريخ: " + LocalDate.now(), normal);
 
             // ==== Table ====
@@ -110,16 +110,16 @@ public class PdfService {
                     "   تاريخ الفاتورة: " + purchaseOrder.getDate() + "   التاريخ: " + LocalDate.now(), normal);
 
             // ==== Table ====
-            PdfPTable table = new PdfPTable(6);
+            PdfPTable table = new PdfPTable(5);
             table.setWidthPercentage(100);
-            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f, 1.5f, 2.0f});
+            table.setWidths(new float[]{1.5f, 1.0f, 1.5f, 1.5f, 2.0f});
             table.setRunDirection(PdfWriter.RUN_DIRECTION_RTL);
 
             table.addCell(createHeaderCell("المنتج", bold));
             table.addCell(createHeaderCell("الكمية", bold));
             table.addCell(createHeaderCell("السعر الفردي قبل الضريبة", bold));
             table.addCell(createHeaderCell("السعر الفردي بعد الضريبة", bold));
-            table.addCell(createHeaderCell("الخصم (%)", bold));
+//            table.addCell(createHeaderCell("الخصم (%)", bold));
             table.addCell(createHeaderCell("الإجمالي", bold));
             List<Goods> goods = purchaseOrder.getGoods();
             for (Goods good : goods) {
@@ -127,7 +127,7 @@ public class PdfService {
                 table.addCell(createWrappedCell(String.valueOf(good.getWeightInGrams()), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams() / 1.02), normal));
                 table.addCell(createWrappedCell(String.format("%.2f", good.getPriceForGrams()), normal));
-                table.addCell(createWrappedCell(good.getDiscount() + "%", normal));
+//                table.addCell(createWrappedCell(good.getDiscount() + "%", normal));
                 double d = good.getPriceForGrams() * good.getWeightInGrams();
                 table.addCell(createWrappedCell(
                         String.format("%.2f", d - d * (good.getDiscount() / 100.0)), normal));
