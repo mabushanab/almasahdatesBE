@@ -18,7 +18,7 @@ public class ItemService {
     public ItemDto getByName(String name) {
         Item item = itemRepository.findByName(name);
 
-        return new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubtype(), item.getDescr());
+        return new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubType(), item.getDescr());
     }
 
     public Item getEntityByName(String name) {
@@ -32,7 +32,7 @@ public class ItemService {
 
     public List<ItemDto> getAllItems() {
         return itemRepository.findAll().stream().
-                map(item -> new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubtype(), item.getDescr())).toList();
+                map(item -> new ItemDto(item.getName(), item.getSalePrice(), item.getType(), item.getSubType(), item.getDescr())).toList();
     }
 
     public String createItem(Item item) {
