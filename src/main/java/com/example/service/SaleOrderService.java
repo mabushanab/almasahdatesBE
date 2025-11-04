@@ -3,12 +3,10 @@ package com.example.service;
 import com.example.dto.ProductDto;
 import com.example.dto.SaleOrderDto;
 import com.example.model.Products;
-import com.example.model.PurchaseOrder;
 import com.example.model.SaleOrder;
 import com.example.repository.SaleOrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +31,8 @@ public class SaleOrderService {
                 map(saleOrder ->
                         new SaleOrderDto(saleOrder.getSOId(), saleOrder.getCustomer().getName(),
                                 saleOrder.getProducts().stream().map(g -> new ProductDto(
-                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(),g.getDiscount(), g.getNotes()
-                        )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
+                                        g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
+                                )).toList(), saleOrder.getDate(), saleOrder.getTotalPrice(),
                                 saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
     }
 
@@ -46,7 +44,7 @@ public class SaleOrderService {
         saleOrder.setSOId(soId);
         saleOrder.setCustomer(customerService.getCustomerByName(saleOrderDto.getCustomerName()));
         saleOrder.setProducts(saleOrderDto.getProducts().stream().map(
-                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(),g.getDiscount(), g.getNotes()))
+                        g -> new Products(itemService.getEntityByName(g.getItemName()), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()))
                 .toList());
         saleOrder.setDate(LocalDate.now());
         saleOrder.setRemainAmount(saleOrderDto.getRemainAmount());
@@ -88,12 +86,13 @@ public class SaleOrderService {
         return pdfService.generateInvoiceSOs(
                 saleOrderRepository.getBysOId(sOId));
     }
-    public double getMaxValue(String name){
-        return Math.round(productService.getMaxValue(name) * 100.00) /100.00;
+
+    public double getMaxValue(String name) {
+        return Math.round(productService.getMaxValue(name) * 100.00) / 100.00;
     }
 
-    public double productPrice(String name){
-        return Math.round(itemService.getSalePrice(name) * 100.00) /100.00;
+    public double productPrice(String name) {
+        return Math.round(itemService.getSalePrice(name) * 100.00) / 100.00;
     }
 
 
@@ -102,18 +101,45 @@ public class SaleOrderService {
         if (saleOrder.getRemainAmount() > amount) {
             saleOrder.setRemainAmount((saleOrder.getRemainAmount() - amount));
             saleOrderRepository.save(saleOrder);
-            return "The SO: " + sOId + " amount " + amount + "is payed.";}
-        else if (saleOrder.getRemainAmount() == amount) {
+            return "The SO: " + sOId + " amount " + amount + "is payed.";
+        } else if (saleOrder.getRemainAmount() == amount) {
             saleOrder.setRemainAmount((saleOrder.getRemainAmount() - amount));
             saleOrderRepository.save(saleOrder);
             return "The SO: " + sOId + " fully amount is payed.";
 
         } else return "Amount is bigger than Remaining.";
     }
+
     public String payAllRemainAmount(String sOId) {
         SaleOrder saleOrder = saleOrderRepository.getBysOId(sOId);
         saleOrder.setRemainAmount(0);
         saleOrderRepository.save(saleOrder);
         return "The SO: " + sOId + " amount is fully payed.";
     }
+
+    public List<SaleOrderDto> getByCustomerName(String name) {
+        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
+                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
+                        saleOrder.getCustomer().getName(),
+                        saleOrder.getProducts().stream().map(g -> new ProductDto(
+                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
+                        )).toList()
+                        , saleOrder.getDate(),
+                        saleOrder.getTotalPrice(),
+                        saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
+
+    }
+
+//    public List<SaleOrderDto> getByCustomerTotalAndRemain(String name) {
+//        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
+//                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
+//                        saleOrder.getCustomer().getName(),
+//                        saleOrder.getProducts().stream().map(g -> new ProductDto(
+//                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
+//                        )).toList()
+//                        , saleOrder.getDate(),
+//                        saleOrder.getTotalPrice(),
+//                        saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
+//
+//    }
 }

@@ -15,6 +15,7 @@ C:\development\almasahdatesBE\src\main\java\com\example\dto\CustomerDto.java
 C:\development\almasahdatesBE\src\main\java\com\example\dto\HomeDto.java
 C:\development\almasahdatesBE\src\main\java\com\example\controller\MerchantController.java
 C:\development\almasahdatesBE\src\main\java\com\example\repository\MerchantRepository.java
+C:\development\almasahdatesBE\src\main\java\com\example\dto\CustomerDataResponse.java
 C:\development\almasahdatesBE\src\main\java\com\example\service\CustomerService.java
 C:\development\almasahdatesBE\src\main\java\com\example\model\Goods.java
 C:\development\almasahdatesBE\src\main\java\com\example\repository\PurchaseOrderRepository.java

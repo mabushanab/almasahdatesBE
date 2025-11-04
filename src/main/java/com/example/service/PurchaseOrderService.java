@@ -31,7 +31,7 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
                         new PurchaseOrderDto(purchaseOrder.getPOId(), purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
-                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(),g.getDiscount(), g.getNotes()
+                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getDiscount(), g.getNotes()
                         )).toList(), purchaseOrder.getDate(), purchaseOrder.getTotalPrice(),
                                 purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
     }
@@ -85,6 +85,19 @@ public class PurchaseOrderService {
 
     public List<PurchaseOrder> getByMerchantId(Long id) {
         return purchaseOrderRepository.getByMerchantId(id);
+    }
+
+    public List<PurchaseOrderDto> getByMerchantName(String name) {
+
+        return getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
+                purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getPOId(),
+                        purchaseOrder.getMerchant().getName(),
+                        purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
+                                g.getItem().getName(), g.getPriceForGrams(), g.getWeightInGrams(), g.getDiscount(), g.getNotes()
+                        )).toList()
+                        , purchaseOrder.getDate(),
+                        purchaseOrder.getTotalPrice(),
+                        purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
     }
 
     public byte[] generateInvoice(String pOId) {

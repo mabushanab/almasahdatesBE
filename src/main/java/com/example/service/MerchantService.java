@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
+//    private final PurchaseOrderService purchaseOrderService;
+
 
 //    public Map<String, List<Float>> getMerchantRemainAmount() {
 //        return merchantRepository.findAll()
@@ -75,4 +77,8 @@ public class MerchantService {
         }
 
     }
+
+//    public List<PurchaseOrder> getMerchantPOs(String name) {
+//        return purchaseOrderService.getByMerchantId(merchantRepository.findByName(name).getId());
+//    }
 }

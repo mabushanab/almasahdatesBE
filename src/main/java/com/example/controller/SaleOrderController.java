@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.PurchaseOrderDto;
 import com.example.dto.SaleOrderDto;
 import com.example.model.SaleOrder;
 import com.example.service.SaleOrderService;
@@ -55,5 +56,10 @@ public class SaleOrderController {
     @GetMapping("/payAllRemainAmount")
     public String payAllRemainAmount(@RequestParam String sOId) {
         return saleOrderService.payAllRemainAmount(sOId);
+    }
+    @GetMapping("/SOs")
+    public List<SaleOrderDto> getCustomerSOs(@RequestParam String customerName) {
+        return saleOrderService.getByCustomerName(customerName);
+
     }
 }

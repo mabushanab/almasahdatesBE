@@ -42,4 +42,8 @@ public class MerchantController {
         return merchantService.deleteMerchant(name);
     }
 
+//    @GetMapping("/POs")
+//    public MerchantDto getMerchantPOs(@RequestParam String name) {
+//        return merchantService.getByMerchantPOs(name);
+//    }
 }
