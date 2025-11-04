@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.example.dto.CustomerDataResponse;
 import com.example.dto.GoodsDto;
+import com.example.dto.MerchantDataResponse;
 import com.example.dto.PurchaseOrderDto;
 import com.example.model.Goods;
 import com.example.model.Item;
@@ -87,9 +89,9 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.getByMerchantId(id);
     }
 
-    public List<PurchaseOrderDto> getByMerchantName(String name) {
+    public MerchantDataResponse getByMerchantName(String name) {
 
-        return getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
+        List<PurchaseOrderDto> pos = getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
                 purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getPOId(),
                         purchaseOrder.getMerchant().getName(),
                         purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
@@ -98,6 +100,8 @@ public class PurchaseOrderService {
                         , purchaseOrder.getDate(),
                         purchaseOrder.getTotalPrice(),
                         purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
+
+        return new MerchantDataResponse(pos, pos.stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum(), pos.stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum());
     }
 
     public byte[] generateInvoice(String pOId) {

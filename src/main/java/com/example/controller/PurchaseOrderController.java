@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.dto.CustomerDataResponse;
+import com.example.dto.MerchantDataResponse;
 import com.example.dto.MerchantDto;
 import com.example.dto.PurchaseOrderDto;
 import com.example.model.PurchaseOrder;
@@ -52,7 +54,7 @@ public class PurchaseOrderController {
         return purchaseOrderService.payAllRemainAmount(pOId);
     }
     @GetMapping("/POs")
-    public List<PurchaseOrderDto> getMerchantPOs(@RequestParam String merchantName) {
+    public MerchantDataResponse getMerchantPOs(@RequestParam String merchantName) {
         return purchaseOrderService.getByMerchantName(merchantName);
 
     }

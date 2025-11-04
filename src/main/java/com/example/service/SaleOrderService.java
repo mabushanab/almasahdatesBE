@@ -1,7 +1,6 @@
 package com.example.service;
 
-import com.example.dto.ProductDto;
-import com.example.dto.SaleOrderDto;
+import com.example.dto.*;
 import com.example.model.Products;
 import com.example.model.SaleOrder;
 import com.example.repository.SaleOrderRepository;
@@ -117,8 +116,22 @@ public class SaleOrderService {
         return "The SO: " + sOId + " amount is fully payed.";
     }
 
-    public List<SaleOrderDto> getByCustomerName(String name) {
-        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
+//    public List<SaleOrderDto> getByCustomerName(String name) {
+//        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
+//                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
+//                        saleOrder.getCustomer().getName(),
+//                        saleOrder.getProducts().stream().map(g -> new ProductDto(
+//                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
+//                        )).toList()
+//                        , saleOrder.getDate(),
+//                        saleOrder.getTotalPrice(),
+//                        saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
+//
+//    }
+
+    public CustomerDataResponse getByCustomerName(String name) {
+
+        List<SaleOrderDto> sos = getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
                 saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
                         saleOrder.getCustomer().getName(),
                         saleOrder.getProducts().stream().map(g -> new ProductDto(
@@ -128,8 +141,8 @@ public class SaleOrderService {
                         saleOrder.getTotalPrice(),
                         saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
 
+        return new CustomerDataResponse(sos, sos.stream().mapToDouble(SaleOrderDto::getTotalPrice).sum(), sos.stream().mapToDouble(SaleOrderDto::getRemainAmount).sum());
     }
-
 //    public List<SaleOrderDto> getByCustomerTotalAndRemain(String name) {
 //        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
 //                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
