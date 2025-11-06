@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomerDataResponse {
 
-    private List<SaleOrderDto> saleOrderDtos;
+    private List<SaleOrderDto> saleOrders;
     private double remain;
     private double total;
 //    private double

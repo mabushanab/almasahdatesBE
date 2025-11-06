@@ -45,6 +45,7 @@ C:\development\almasahdatesBE\src\main\java\com\example\service\GoodsService.jav
 C:\development\almasahdatesBE\src\main\java\com\example\service\HomeService.java
 C:\development\almasahdatesBE\src\main\java\com\example\repository\ProductsRepository.java
 C:\development\almasahdatesBE\src\main\java\com\example\service\PdfService.java
+C:\development\almasahdatesBE\src\main\java\com\example\dto\MerchantDataResponse.java
 C:\development\almasahdatesBE\src\main\java\com\example\dto\LoginRequest.java
 C:\development\almasahdatesBE\src\main\java\com\example\repository\CustomerRepository.java
 C:\development\almasahdatesBE\src\main\java\com\example\dto\PurchaseOrderDto.java
