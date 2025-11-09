@@ -12,8 +12,8 @@ import java.util.List;
 public class CustomerDataResponse {
 
     private List<SaleOrderDto> saleOrders;
-    private double remain;
     private double total;
+    private double remain;
 //    private double
 
 }
