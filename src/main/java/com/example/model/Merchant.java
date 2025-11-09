@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "app_merchant")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class Merchant {
+public class Merchant extends BaseTenantEntity{
 
 
     @Id

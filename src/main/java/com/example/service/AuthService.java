@@ -7,6 +7,7 @@ import com.example.repository.UserRepository;
 import com.example.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.USER);
         userRepository.save(user);
-        return jwtUtil.generateToken(user.getUsername());
+        return jwtUtil.generateToken(user);
     }
 
     public String login(LoginRequest request) {
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-        return jwtUtil.generateToken(request.getUsername());
+
+        return jwtUtil.generateToken(userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found")));
     }
 }

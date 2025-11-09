@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "app_sale_order")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class SaleOrder {
+public class SaleOrder extends BaseTenantEntity{
 
 
     @Id

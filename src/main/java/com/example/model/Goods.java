@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Goods {
+public class Goods extends BaseTenantEntity{
 
 
     @Id

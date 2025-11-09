@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseOrder {
+public class PurchaseOrder extends BaseTenantEntity{
 
 
     @Id

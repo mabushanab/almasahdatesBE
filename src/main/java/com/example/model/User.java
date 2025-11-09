@@ -9,7 +9,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "app_user") 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class User {
+public class User extends BaseTenantEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
