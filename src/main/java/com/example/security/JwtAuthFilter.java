@@ -1,17 +1,14 @@
 package com.example.security;
 
 import com.example.config.TenantContext;
-import jakarta.persistence.EntityManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
@@ -19,16 +16,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtTokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
-    private final EntityManager entityManager; // ✅ inject EntityManager
 
-    public JwtAuthFilter(JwtUtil jwtTokenProvider, UserDetailsServiceImpl userDetailsService, EntityManager entityManager) {
+    public JwtAuthFilter(JwtUtil jwtTokenProvider, UserDetailsServiceImpl userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
-        this.entityManager = entityManager;
     }
 
     @Override
-    @Transactional
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
@@ -50,17 +44,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
 
+            // ✅ Set tenant in ThreadLocal only
             String tenantId = jwtTokenProvider.extractTenantId(token);
+            System.out.println("t2 " + tenantId);
             if (tenantId != null) {
                 TenantContext.setTenantId(tenantId);
-
-                // ✅ Enable Hibernate filter inside same transactional session
-                Session session = entityManager.unwrap(Session.class);
-                session.enableFilter("tenantFilter").setParameter("tenantId", tenantId);
-                System.out.println("✅ Tenant filter enabled for tenant: " + tenantId);
             }
         }
 
         filterChain.doFilter(request, response);
+
+        // cleanup
+        TenantContext.clear();
     }
 }

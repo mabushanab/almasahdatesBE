@@ -25,8 +25,10 @@ public class HomeService {
     private final SaleOrderService saleOrderService;
     private final ProductService productService;
     private final GoodsService goodsService;
+    private final TenantServiceHelper tenantHelper;
 
     public HomeDto getCreditDebitDetails() {
+        tenantHelper.enableTenantFilter();
         double poSum = Math.round(purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum() * 100.00) /100.00;
         double poSumRemain = Math.round(purchaseOrderService.getAllPurchaseOrders().stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum() * 100.00) /100.00;
         double soSum = Math.round(saleOrderService.getAllSaleOrders().stream().mapToDouble(SaleOrderDto::getTotalPrice).sum() * 100.00) /100.00;

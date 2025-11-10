@@ -1,7 +1,6 @@
 package com.example.security;
 
 import com.example.model.User;
-import com.example.service.UserService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +25,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("tenantId", user.getTenantId())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -47,7 +47,6 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody().get("tenantId", String.class);
-
     }
 
     public boolean validateToken(String token) {

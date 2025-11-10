@@ -3,7 +3,6 @@ package com.example.config;
 import com.example.security.JwtAuthFilter;
 import com.example.security.JwtUtil;
 import com.example.security.UserDetailsServiceImpl;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,32 +27,32 @@ public class SecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtTokenProvider;
-    private final EntityManager entityManager;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        JwtAuthFilter jwtAndTenantFilter = new JwtAuthFilter(jwtTokenProvider, userDetailsService, entityManager);
+    public JwtAuthFilter jwtAuthFilter() {
+        return new JwtAuthFilter(jwtTokenProvider, userDetailsService);
+    }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http.cors().and()
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtAndTenantFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://178.128.162.165","https://almasahdates.com", "http://almasahdates.com","http://localhost:*","ws://127.0.0.1")); // <- wildcard works here
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:*", "http://almasahdates.com", "https://almasahdates.com"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

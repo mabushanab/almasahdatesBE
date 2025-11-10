@@ -13,16 +13,17 @@ public class ProductService {
 
     private final ProductsRepository productsRepository;
     private final ItemService itemService;
-
+    private final TenantServiceHelper tenantHelper;
 
     public List<Products> getAllByItemId(long Itemid) {
+        tenantHelper.enableTenantFilter();
 
         return productsRepository.findByItemId(Itemid);
     }
 
     public final double getMaxValue(String name) {
-
-       return productsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
+        tenantHelper.enableTenantFilter();
+        return productsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
                 .stream().mapToDouble(Products::getPriceForItem).max().orElse(0.0);
     }
 }

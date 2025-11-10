@@ -24,8 +24,10 @@ public class SaleOrderService {
     private final JdbcTemplate jdbcTemplate;
     private final ProductService productService;
     private final DecimalFormat df = new DecimalFormat("0.00");
+    private final TenantServiceHelper tenantHelper;
 
     public List<SaleOrderDto> getAllSaleOrders() {
+        tenantHelper.enableTenantFilter();
         return saleOrderRepository.findAll().stream().
                 map(saleOrder ->
                         new SaleOrderDto(saleOrder.getSOId(), saleOrder.getCustomer().getName(),
@@ -36,6 +38,7 @@ public class SaleOrderService {
     }
 
     public String createSaleOrder(SaleOrderDto saleOrderDto) {
+        tenantHelper.enableTenantFilter();
         long nextVal = getNextSequenceValue("sale_order");
         String soId = "SO-" + LocalDate.now().toString().replace("-", "")
                 + "-" + String.format("%04d", nextVal);
@@ -73,15 +76,18 @@ public class SaleOrderService {
 
     @Transactional
     public String deleteSaleOrder(Long id) {
+        tenantHelper.enableTenantFilter();
         saleOrderRepository.deleteById(id);
         return "The SaleOrder deleted successfully";
     }
 
     public List<SaleOrder> getByCustomerId(Long id) {
+        tenantHelper.enableTenantFilter();
         return saleOrderRepository.getByCustomerId(id);
     }
 
     public byte[] generateInvoice(String sOId) {
+        tenantHelper.enableTenantFilter();
         return pdfService.generateInvoiceSOs(
                 saleOrderRepository.getBysOId(sOId));
     }
@@ -96,6 +102,7 @@ public class SaleOrderService {
 
 
     public String payRemainAmount(String sOId, double amount) {
+        tenantHelper.enableTenantFilter();
         SaleOrder saleOrder = saleOrderRepository.getBysOId(sOId);
         if (saleOrder.getRemainAmount() > amount) {
             saleOrder.setRemainAmount((saleOrder.getRemainAmount() - amount));
@@ -110,6 +117,7 @@ public class SaleOrderService {
     }
 
     public String payAllRemainAmount(String sOId) {
+        tenantHelper.enableTenantFilter();
         SaleOrder saleOrder = saleOrderRepository.getBysOId(sOId);
         saleOrder.setRemainAmount(0);
         saleOrderRepository.save(saleOrder);

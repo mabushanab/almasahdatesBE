@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TenantServiceHelper tenantHelper;
 
     public List<UserDto> getAllUsers() {
+        tenantHelper.enableTenantFilter();
         return userRepository.findAll()
                 .stream()
                 .map(u -> new UserDto(u.getUsername(), u.getRole()))
@@ -24,12 +26,14 @@ public class UserService {
     }
 
     public UserDto getUserById(Long id) {
+        tenantHelper.enableTenantFilter();
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         return new UserDto(user.getUsername(), user.getRole());
     }
 
     public UserDto createUser(UserDto dto) {
+        tenantHelper.enableTenantFilter();
         User user = new User();
         user.setUsername(dto.getUsername());
         user.setRole(dto.getRole());

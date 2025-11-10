@@ -27,9 +27,11 @@ public class PurchaseOrderService {
     private final PdfService pdfService;
     private final JdbcTemplate jdbcTemplate;
     private final GoodsService goodsService;
+    private final TenantServiceHelper tenantHelper;
 
 
     public List<PurchaseOrderDto> getAllPurchaseOrders() {
+        tenantHelper.enableTenantFilter();
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
                         new PurchaseOrderDto(purchaseOrder.getPOId(), purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
@@ -40,6 +42,7 @@ public class PurchaseOrderService {
 
     @Transactional
     public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
+        tenantHelper.enableTenantFilter();
 
         long nextVal = getNextSequenceValue("purchase_order");
         String poId = "PO-" + LocalDate.now().toString().replace("-", "")
@@ -63,12 +66,14 @@ public class PurchaseOrderService {
 
     @Transactional
     public String deletePurchaseOrder(Long id) {
+        tenantHelper.enableTenantFilter();
         purchaseOrderRepository.deleteById(id);
         return "The PurchaseOrder deleted successfully";
     }
 
     @Transactional
     public int getNextSequenceValue(String name) {
+        tenantHelper.enableTenantFilter();
         // Step 1: Update the value
         jdbcTemplate.update(
                 "UPDATE sequence_counter SET next_val = next_val + 1 WHERE name = ?",
@@ -86,10 +91,12 @@ public class PurchaseOrderService {
     }
 
     public List<PurchaseOrder> getByMerchantId(Long id) {
+        tenantHelper.enableTenantFilter();
         return purchaseOrderRepository.getByMerchantId(id);
     }
 
     public MerchantDataResponse getByMerchantName(String name) {
+//        tenantHelper.enableTenantFilter();
 
         List<PurchaseOrderDto> pos = getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
                 purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getPOId(),
@@ -105,6 +112,7 @@ public class PurchaseOrderService {
     }
 
     public byte[] generateInvoice(String pOId) {
+        tenantHelper.enableTenantFilter();
         return pdfService.generateInvoicePOs(purchaseOrderRepository.getBypOId(pOId));
     }
 
@@ -113,6 +121,7 @@ public class PurchaseOrderService {
     }
 
     public String payRemainAmount(String pOId, double amount) {
+        tenantHelper.enableTenantFilter();
         PurchaseOrder purchaseOrder = purchaseOrderRepository.getBypOId(pOId);
         if (purchaseOrder.getRemainAmount() > amount) {
             purchaseOrder.setRemainAmount((purchaseOrder.getRemainAmount() - amount));
@@ -127,6 +136,7 @@ public class PurchaseOrderService {
     }
 
     public String payAllRemainAmount(String pOId) {
+        tenantHelper.enableTenantFilter();
         PurchaseOrder purchaseOrder = purchaseOrderRepository.getBypOId(pOId);
         purchaseOrder.setRemainAmount(0);
         purchaseOrderRepository.save(purchaseOrder);

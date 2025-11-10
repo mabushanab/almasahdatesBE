@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class MerchantService {
 
     private final MerchantRepository merchantRepository;
+    private final TenantServiceHelper tenantHelper;
 //    private final PurchaseOrderService purchaseOrderService;
 
 
@@ -35,25 +36,30 @@ public class MerchantService {
 
 
     public MerchantDto getByName(String name) {
+        tenantHelper.enableTenantFilter();
         Merchant merchant = merchantRepository.findByName(name);
 
         return new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes());
     }
 
     Merchant getMerchantByName(String name) {
+        tenantHelper.enableTenantFilter();
         return merchantRepository.findByName(name);
     }
 
     public List<MerchantDto> getAllMerchants() {
+        tenantHelper.enableTenantFilter();
         return merchantRepository.findAll().stream().
                 map(merchant -> new MerchantDto(merchant.getName(), merchant.getType(), merchant.getMobileNumber(), merchant.getAddress(), merchant.getRate(), merchant.getNotes())).toList();
     }
 
     public List<Merchant> getAllMerchantsEntities() {
+        tenantHelper.enableTenantFilter();
         return merchantRepository.findAll();
     }
 
     public String createMerchant(Merchant merchant) {
+        tenantHelper.enableTenantFilter();
         if (merchantRepository.existsByName(merchant.getName()))
             throw new IllegalArgumentException("Merchant already exist");
         else merchantRepository.save(merchant);
@@ -62,11 +68,13 @@ public class MerchantService {
 
     @Transactional
     public String deleteMerchant(String name) {
+        tenantHelper.enableTenantFilter();
         merchantRepository.deleteByName(name);
         return "The Merchant: " + name + " deleted successfully";
     }
 
     public String createMerchantList(List<Merchant> merchants) {
+        tenantHelper.enableTenantFilter();
         List<Merchant> p = merchants.stream().filter(merchant -> !merchantRepository.existsByName(merchant.getName())).toList();
         if (p.isEmpty())
             return "All merchants already exist";

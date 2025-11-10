@@ -19,17 +19,21 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
+    private final TenantServiceHelper tenantHelper;
 
     public String register(RegisterRequest request) {
+//        tenantHelper.enableTenantFilter();
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setTenantId(request.getTenantId());
         user.setRole(UserRole.USER);
         userRepository.save(user);
         return jwtUtil.generateToken(user);
     }
 
     public String login(LoginRequest request) {
+//        tenantHelper.enableTenantFilter();
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
