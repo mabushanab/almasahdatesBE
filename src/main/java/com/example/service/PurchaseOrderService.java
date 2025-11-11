@@ -32,6 +32,10 @@ public class PurchaseOrderService {
 
     public List<PurchaseOrderDto> getAllPurchaseOrders() {
         tenantHelper.enableTenantFilter();
+//        System.out.println("pos " + purchaseOrderRepository.findAll().stream()
+//                .map(PurchaseOrder::getPOId)
+//                .toList());
+
         return purchaseOrderRepository.findAll().stream().
                 map(purchaseOrder ->
                         new PurchaseOrderDto(purchaseOrder.getPOId(), purchaseOrder.getMerchant().getName(), purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
