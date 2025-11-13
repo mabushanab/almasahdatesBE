@@ -13,7 +13,6 @@ public class TenantServiceHelper {
 
     public void enableTenantFilter() {
         String tenantId = TenantContext.getTenantId();
-        System.out.println("helper " + tenantId);
         if (tenantId != null) {
             Session session = entityManager.unwrap(Session.class);
             if (session.getEnabledFilter("tenantFilter") == null) {
