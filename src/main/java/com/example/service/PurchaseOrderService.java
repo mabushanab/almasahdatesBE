@@ -27,6 +27,7 @@ public class PurchaseOrderService {
     private final PdfService pdfService;
     private final JdbcTemplate jdbcTemplate;
     private final GoodsService goodsService;
+    private final StoreService storeService;
     private final TenantServiceHelper tenantHelper;
 
 
@@ -48,6 +49,7 @@ public class PurchaseOrderService {
     public String createPurchaseOrder(PurchaseOrderDto purchaseOrderDto) {
         tenantHelper.enableTenantFilter();
 
+
         long nextVal = getNextSequenceValue("purchase_order");
         String poId = "PO-" + LocalDate.now().toString().replace("-", "")
                 + "-" + String.format("%04d", nextVal);
@@ -65,6 +67,8 @@ public class PurchaseOrderService {
         purchaseOrder.setTotalPrice(purchaseOrderDto.getTotalPrice());
         purchaseOrder.setNotes(purchaseOrderDto.getNotes());
         purchaseOrderRepository.save(purchaseOrder);
+        storeService.addToStore(purchaseOrder.getGoods().stream().toList());
+
         return "The Purchase Order for merchant : " + purchaseOrder.getMerchant().getName() + " saved successfully";
     }
 

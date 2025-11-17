@@ -13,11 +13,11 @@ public class TenantServiceHelper {
 
     public void enableTenantFilter() {
         String tenantId = TenantContext.getTenantId();
-        if (tenantId != null) {
-            Session session = entityManager.unwrap(Session.class);
-            if (session.getEnabledFilter("tenantFilter") == null) {
-                session.enableFilter("tenantFilter").setParameter("tenantId", tenantId);
-            }
-        }
+//        if (tenantId != null) {
+//            Session session = entityManager.unwrap(Session.class);
+//            if (session.getEnabledFilter("tenantFilter") == null) {
+//                session.enableFilter("tenantFilter").setParameter("tenantId", tenantId);
+//            }
+//        }
     }
 }

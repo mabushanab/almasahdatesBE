@@ -2,7 +2,10 @@ package com.example.service;
 
 import com.example.dto.ItemDto;
 import com.example.model.Item;
+import com.example.model.Store;
 import com.example.repository.ItemRepository;
+import com.example.repository.StoreRepository;
+import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final StoreService storeService;
     private final TenantServiceHelper tenantHelper;
 
 
@@ -42,13 +46,11 @@ public class ItemService {
 
     public String createItem(Item item) {
         tenantHelper.enableTenantFilter();
-        System.out.println("create item");
+//        storeService.createUser()
         if (itemRepository.existsByName(item.getName())) {
-            System.out.println("create item in if");
             throw new IllegalArgumentException("Item already exist");
         } else {
             itemRepository.save(item);
-            System.out.println("create item in else");
         }
         return "The Item: " + item.getName() + " saved successfully";
     }

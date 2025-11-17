@@ -33,7 +33,7 @@ public abstract class BaseTenantEntity {
     @Column(name = "branch_id")
     private String branchId;
 
-    private String createdBy;
-    private LocalDateTime createdAt;
+//    private String createdBy;
+//    private LocalDateTime createdAt;
 
 }

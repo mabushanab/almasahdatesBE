@@ -25,6 +25,7 @@ public class SaleOrderService {
     private final ProductService productService;
     private final DecimalFormat df = new DecimalFormat("0.00");
     private final TenantServiceHelper tenantHelper;
+    private final StoreService storeService;
 
     public List<SaleOrderDto> getAllSaleOrders() {
         tenantHelper.enableTenantFilter();
@@ -53,6 +54,8 @@ public class SaleOrderService {
         saleOrder.setTotalPrice(saleOrderDto.getTotalPrice());
         saleOrder.setNotes(saleOrderDto.getNotes());
         saleOrderRepository.save(saleOrder);
+        storeService.removeFromStore(saleOrder.getProducts().stream().toList());
+
         return "The Sale Order for customer : " + saleOrder.getCustomer().getName() + " saved successfully";
     }
 
