@@ -13,6 +13,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 
+import java.time.LocalDateTime;
+
 @MappedSuperclass
 @FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = String.class))
 @Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
@@ -27,4 +29,11 @@ public abstract class BaseTenantEntity {
 
     @Column(name = "tenant_id", nullable = false)
     private String tenantId;
+
+    @Column(name = "branch_id")
+    private String branchId;
+
+    private String createdBy;
+    private LocalDateTime createdAt;
+
 }

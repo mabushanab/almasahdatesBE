@@ -24,7 +24,8 @@ public class JwtUtil {
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("tenantId", user.getTenantId())
+                .claim("marketId", user.getTenantId())
+                .claim("branchId", user.getBranchId())
                 .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
@@ -46,7 +47,7 @@ public class JwtUtil {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
-                .getBody().get("tenantId", String.class);
+                .getBody().get("marketId", String.class);
     }
 
     public boolean validateToken(String token) {

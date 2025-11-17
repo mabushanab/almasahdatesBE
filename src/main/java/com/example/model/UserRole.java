@@ -15,6 +15,7 @@ public enum UserRole {
 *
 *
 ADMIN, add/delete/modify items, customers, merchants, stores, branches, users with roles.
+*
 needed features, stores, branches management, users and roles
 
 BRANCH-MANAGER, approve his customers, show request, branch only details.

@@ -7,234 +7,604 @@
 	},
 	"item": [
 		{
-			"name": "/auth/login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"mosab\",\r\n    \"password\": \"mosab\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "auth",
+			"item": [
+				{
+					"name": "/auth/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"s\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{baseURL}}/auth/login",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/auth/register",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"mosab\",\r\n    \"password\": \"mosab\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "/auth/register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"mosab\",\r\n    \"password\": \"mosab\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth/register",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/auth/register",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"auth",
-						"register"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "/product/list",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MDYxNjI3NywiZXhwIjoxNzYwNjE5ODc3fQ.ssnvsexZS-XIJfxV4ZdkY-CVP0-P9hH9XCQW1W3JPSs",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseURL}}/product/list",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"product",
-						"list"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/item/list",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MDYxNjI3NywiZXhwIjoxNzYwNjE5ODc3fQ.ssnvsexZS-XIJfxV4ZdkY-CVP0-P9hH9XCQW1W3JPSs:",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseURL}}/item/list",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"item",
-						"list"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/item/name",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseURL}}/item/صقعي",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"item",
-						"صقعي"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/item/name",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{baseURL}}/item/صقعي",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"item",
-						"صقعي"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/item/createList",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTA0MjUxMCwiZXhwIjoxNzYxMDQ2MTEwfQ.1TbvQSftt80OTUmcYaXTS2Y8pCCR4OK6HTTepdFU3oU",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "[\r\n    {\r\n        \"name\": \"majhool\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"majhool-delight\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"عحوة الرسول\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n        {\r\n        \"name\": \"majhool-premium\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"majhool-a7mar\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"صقعي\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    }\r\n]",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Customer",
+			"item": [
+				{
+					"name": "/customer/list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token1}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/customer/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"customer",
+								"list"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{baseURL}}/item/createList",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"item",
-						"createList"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "/item/create",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTA0MjUxMCwiZXhwIjoxNzYxMDQ2MTEwfQ.1TbvQSftt80OTUmcYaXTS2Y8pCCR4OK6HTTepdFU3oU",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"خضري مبروم\",\r\n    \"type\": \"تمر\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "deleted",
+			"item": [
+				{
+					"name": "/item/name Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/item/صقعي",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"item",
+								"صقعي"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{baseURL}}/item/create",
-					"host": [
-						"{{baseURL}}"
-					],
-					"path": [
-						"item",
-						"create"
-					]
+				{
+					"name": "/product/list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MjA2NDIwMiwiZXhwIjoxNzYyMDY3ODAyfQ.8bI2TXo6xRE0CFhY4O6fBM1j0y0ZSZE9fd6KWEbVm7c",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/product/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item/list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MDYxNjI3NywiZXhwIjoxNzYwNjE5ODc3fQ.ssnvsexZS-XIJfxV4ZdkY-CVP0-P9hH9XCQW1W3JPSs:",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/item/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"item",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/home/CDD",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTYyMjkxNiwiZXhwIjoxNzYxNjI2NTE2fQ.69H1giISNiaIS3Nu2wQmX4Bq0ntsKJ6uBH86rYzTYe8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/home/CDD",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"home",
+								"CDD"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/home/CDD Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTYyMjkxNiwiZXhwIjoxNzYxNjI2NTE2fQ.69H1giISNiaIS3Nu2wQmX4Bq0ntsKJ6uBH86rYzTYe8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/home/CDD",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"home",
+								"CDD"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item/name",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": " Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTAyMDMxNiwiZXhwIjoxNzYxMDIzOTE2fQ.VsPHdSplrVCQGBSoI0uXboGhZ4R2lxT2Im82k2kR3UY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/item/صقعي",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"item",
+								"صقعي"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item/createList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTE0MTI3NiwiZXhwIjoxNzYxMTQ0ODc2fQ.rNWk0d7e_HXcj1RXc0AitVH4_BSYcmNjgwg0P1tYSRw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"majhool\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"majhool-delight\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"عحوة الرسول\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n        {\r\n        \"name\": \"majhool-premium\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"majhool-a7mar\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    },\r\n    {\r\n        \"name\": \"صقعي\",\r\n        \"type\": \"date\",\r\n        \"subtype\": \"date\",\r\n        \"descr\": null\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/item/createList",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"item",
+								"createList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/merchant/createList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTE0MTI3NiwiZXhwIjoxNzYxMTQ0ODc2fQ.rNWk0d7e_HXcj1RXc0AitVH4_BSYcmNjgwg0P1tYSRw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"الشيخ\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    },\r\n        {\r\n        \"name\": \"ابو عمر\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/merchant/createList",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"merchant",
+								"createList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/customer/createList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTU2NDcxNCwiZXhwIjoxNzYxNTY4MzE0fQ.WkZKFNWS-WFnGZFsfC2AUqov6LAm6OGdJcxtCsFQtxg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"شاهين\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    },\r\n        {\r\n        \"name\": \"مول العلي\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/customer/createList",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"customer",
+								"createList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/merchant/createList Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTE5MTMyNywiZXhwIjoxNzYxMTk0OTI3fQ.I1ofY4JpbXhEcEAjZHHHH7QtGB6a7Ub8hcnDI2HLvGA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"name\": \"الشيخ\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    },\r\n        {\r\n        \"name\": \"ابو عمر\",\r\n        \"mobileNumber\": \"date\",\r\n        \"address\": \"date\",\r\n        \"notes\": null\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/merchant/List",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"merchant",
+								"List"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/item/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTA0MjUxMCwiZXhwIjoxNzYxMDQ2MTEwfQ.1TbvQSftt80OTUmcYaXTS2Y8pCCR4OK6HTTepdFU3oU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"خضري مبروم\",\r\n    \"type\": \"تمر\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/item/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"item",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/purchaseOrder/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MjA4MjMyOCwiZXhwIjoxNzYyMDg1OTI4fQ.GU1i3XVtIUgvRlku49U5X52_UFxezO3pQJNnpBXeZTE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"merchantName\": \"الشيخ\",\r\n    // \"type\": \"تمر\",\r\n    \"date\": \"2025-10-22\",\r\n    \"totalPrice\": 100,\r\n    \"remainAmount\": 22,\r\n    \"notes\": \"No notes for this po\",\r\n    \"goods\": [\r\n        {\r\n            \"itemName\": \"majhool-a7mar\",\r\n            \"priceForGrams\": 2.4,\r\n            \"weightInGrams\": 5,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool\",\r\n            \"priceForGrams\": 4.8,\r\n            \"weightInGrams\": 30,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool-premium\",\r\n            \"priceForGrams\": 5.2,\r\n            \"weightInGrams\": 50,\r\n            \"notes\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/purchaseOrder/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"purchaseOrder",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/saleOrder/create Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTYyMjkxNiwiZXhwIjoxNzYxNjI2NTE2fQ.69H1giISNiaIS3Nu2wQmX4Bq0ntsKJ6uBH86rYzTYe8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerName\": \"شاهين\",\r\n    // \"type\": \"تمر\",\r\n    \"date\": \"2025-10-22\",\r\n    \"totalPrice\": 100,\r\n    \"remainAmount\": 22,\r\n    \"notes\": \"No notes for this po\",\r\n    \"products\": [\r\n        {\r\n            \"itemName\": \"majhool-a7mar\",\r\n            \"priceForItem\": 2.4,\r\n            \"quantity\": 5,\r\n            \"boxCost\": 3,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool\",\r\n            \"priceForItem\": 2.4,\r\n            \"quantity\": 5,\r\n            \"boxCost\": 3,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool-premium\",\r\n            \"priceForItem\": 2.4,\r\n            \"quantity\": 5,\r\n            \"boxCost\": 3,\r\n            \"notes\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/saleOrder/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"saleOrder",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/saleOrder/create Copy 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTYyMjkxNiwiZXhwIjoxNzYxNjI2NTE2fQ.69H1giISNiaIS3Nu2wQmX4Bq0ntsKJ6uBH86rYzTYe8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/saleOrder/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"saleOrder",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/saleOrder/create Copy 3",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTYyMjkxNiwiZXhwIjoxNzYxNjI2NTE2fQ.69H1giISNiaIS3Nu2wQmX4Bq0ntsKJ6uBH86rYzTYe8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/saleOrder/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"saleOrder",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/purchaseOrder/create Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb3NhYiIsImlhdCI6MTc2MTE5MzM1NywiZXhwIjoxNzYxMTk2OTU3fQ.Lg1VWghj6V7V8bKNaag_pzWxNMox2dg2P8AhNCqdBXA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"merchantName\": \"الشيخ\",\r\n    // \"type\": \"تمر\",\r\n    \"date\": \"2025-10-22\",\r\n    \"totalPrice\": 100,\r\n    \"remainAmount\": 22,\r\n    \"notes\": \"No notes for this po\",\r\n    \"goods\": [\r\n        {\r\n            \"itemName\": \"majhool-a7mar\",\r\n            \"priceForGrams\": 2.4,\r\n            \"weightInGrams\": 5,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool\",\r\n            \"priceForGrams\": 4.8,\r\n            \"weightInGrams\": 30,\r\n            \"notes\": \"\"\r\n        },\r\n        {\r\n            \"itemName\": \"majhool-premium\",\r\n            \"priceForGrams\": 5.2,\r\n            \"weightInGrams\": 50,\r\n            \"notes\": \"\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/purchaseOrder/create",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"purchaseOrder",
+								"create"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
 		{
 			"key": "baseURL",
-			"value": "",
-			"type": "default"
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "token1",
+			"value": ""
 		}
 	]
 }

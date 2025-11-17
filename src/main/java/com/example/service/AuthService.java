@@ -26,8 +26,9 @@ public class AuthService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setTenantId(request.getTenantId());
-        user.setRole(UserRole.USER);
+        user.setTenantId(request.getMarketId());
+        user.setBranchId(request.getBranchId());
+        user.setRole(request.getRole());
         userRepository.save(user);
         return jwtUtil.generateToken(user);
     }
