@@ -103,10 +103,8 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.getByMerchantId(id);
     }
 
-    public MerchantDataResponse getByMerchantName(String name) {
-//        tenantHelper.enableTenantFilter();
-
-        List<PurchaseOrderDto> pos = getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
+    public List<PurchaseOrderDto> getByMerchantName(String name) {
+        return getByMerchantId(merchantService.getMerchantByName(name).getId()).stream().map(
                 purchaseOrder -> new PurchaseOrderDto(purchaseOrder.getPOId(),
                         purchaseOrder.getMerchant().getName(),
                         purchaseOrder.getGoods().stream().map(g -> new GoodsDto(
@@ -115,8 +113,6 @@ public class PurchaseOrderService {
                         , purchaseOrder.getDate(),
                         purchaseOrder.getTotalPrice(),
                         purchaseOrder.getRemainAmount(), purchaseOrder.getNotes())).toList();
-
-        return new MerchantDataResponse(pos, pos.stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum(), pos.stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum());
     }
 
     public byte[] generateInvoice(String pOId) {
@@ -150,4 +146,22 @@ public class PurchaseOrderService {
         purchaseOrderRepository.save(purchaseOrder);
         return "The PO: " + pOId + " amount is fully payed.";
     }
+
+    public MerchantDataResponse getInfoByMerchantName(String name) {
+
+        return new MerchantDataResponse(getByMerchantName(name), sumPo(getByMerchantName(name)), sumPoRemain(getByMerchantName(name)));
+    }
+
+
+    public double sumPo(List<PurchaseOrderDto> purchaseOrders){
+        tenantHelper.enableTenantFilter();
+        return Math.round(purchaseOrders.stream().mapToDouble(PurchaseOrderDto::getTotalPrice).sum() * 100.00) /100.00;
+    }
+
+    public double sumPoRemain(List<PurchaseOrderDto> purchaseOrders){
+        tenantHelper.enableTenantFilter();
+        return Math.round(purchaseOrders.stream().mapToDouble(PurchaseOrderDto::getRemainAmount).sum() * 100.00) /100.00;
+    }
+
+
 }

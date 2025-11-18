@@ -23,13 +23,13 @@ public class Products extends BaseTenantEntity{
     @JoinColumn(name = "item_id")
     private Item item;
 
-    private float priceForItem;
+    private double priceForItem;
     private int quantity;
-    private float boxCost;
+    private double boxCost;
     private int discount;
     private String notes;
 
-    public Products(Item item, float priceForItem, int quantity, float boxCost,int discount, String notes) {
+    public Products(Item item, double priceForItem, int quantity, double boxCost,int discount, String notes) {
         this.item = item;
         this.priceForItem = priceForItem;
         this.quantity = quantity;

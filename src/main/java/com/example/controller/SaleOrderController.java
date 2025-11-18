@@ -60,7 +60,7 @@ public class SaleOrderController {
     }
     @GetMapping("/SOs")
     public CustomerDataResponse getCustomerSOs(@RequestParam String customerName) {
-        return saleOrderService.getByCustomerName(customerName);
+        return saleOrderService.getInfoByCustomerName(customerName);
 
     }
 }

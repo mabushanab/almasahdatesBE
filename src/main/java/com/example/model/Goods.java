@@ -23,12 +23,12 @@ public class Goods extends BaseTenantEntity{
     @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
-    private float priceForGrams;
-    private float weightInGrams;
+    private double priceForGrams;
+    private double weightInGrams;
     private String notes;
     private int discount;
 
-    public Goods(Item item, float priceForGrams, float weightInGrams,int discount, String notes) {
+    public Goods(Item item, double priceForGrams, double weightInGrams,int discount, String notes) {
         this.item = item;
         this.priceForGrams = priceForGrams;
         this.weightInGrams = weightInGrams;

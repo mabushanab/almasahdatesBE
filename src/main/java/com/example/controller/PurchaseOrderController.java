@@ -55,7 +55,7 @@ public class PurchaseOrderController {
     }
     @GetMapping("/POs")
     public MerchantDataResponse getMerchantPOs(@RequestParam String merchantName) {
-        return purchaseOrderService.getByMerchantName(merchantName);
+        return purchaseOrderService.getInfoByMerchantName(merchantName);
 
     }
 }

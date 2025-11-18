@@ -23,7 +23,6 @@ public class SaleOrderService {
     private final PdfService pdfService;
     private final JdbcTemplate jdbcTemplate;
     private final ProductService productService;
-    private final DecimalFormat df = new DecimalFormat("0.00");
     private final TenantServiceHelper tenantHelper;
     private final StoreService storeService;
 
@@ -127,22 +126,13 @@ public class SaleOrderService {
         return "The SO: " + sOId + " amount is fully payed.";
     }
 
-//    public List<SaleOrderDto> getByCustomerName(String name) {
-//        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
-//                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
-//                        saleOrder.getCustomer().getName(),
-//                        saleOrder.getProducts().stream().map(g -> new ProductDto(
-//                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
-//                        )).toList()
-//                        , saleOrder.getDate(),
-//                        saleOrder.getTotalPrice(),
-//                        saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
-//
-//    }
+    public CustomerDataResponse getInfoByCustomerName(String name) {
+        return new CustomerDataResponse(getByCustomerName(name), sumSo(getByCustomerName(name)), sumSoRemain(getByCustomerName(name)));
+    }
 
-    public CustomerDataResponse getByCustomerName(String name) {
+    public List<SaleOrderDto> getByCustomerName(String name) {
 
-        List<SaleOrderDto> sos = getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
+        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
                 saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
                         saleOrder.getCustomer().getName(),
                         saleOrder.getProducts().stream().map(g -> new ProductDto(
@@ -151,19 +141,16 @@ public class SaleOrderService {
                         , saleOrder.getDate(),
                         saleOrder.getTotalPrice(),
                         saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
-
-        return new CustomerDataResponse(sos, sos.stream().mapToDouble(SaleOrderDto::getTotalPrice).sum(), sos.stream().mapToDouble(SaleOrderDto::getRemainAmount).sum());
     }
-//    public List<SaleOrderDto> getByCustomerTotalAndRemain(String name) {
-//        return getByCustomerId(customerService.getCustomerByName(name).getId()).stream().map(
-//                saleOrder -> new SaleOrderDto(saleOrder.getSOId(),
-//                        saleOrder.getCustomer().getName(),
-//                        saleOrder.getProducts().stream().map(g -> new ProductDto(
-//                                g.getItem().getName(), g.getPriceForItem(), g.getQuantity(), g.getBoxCost(), g.getDiscount(), g.getNotes()
-//                        )).toList()
-//                        , saleOrder.getDate(),
-//                        saleOrder.getTotalPrice(),
-//                        saleOrder.getRemainAmount(), saleOrder.getNotes())).toList();
-//
-//    }
+
+
+    public double sumSo(List<SaleOrderDto> saleOrders) {
+        tenantHelper.enableTenantFilter();
+        return Math.round(saleOrders.stream().mapToDouble(SaleOrderDto::getTotalPrice).sum() * 100.00) / 100.00;
+    }
+
+    public double sumSoRemain(List<SaleOrderDto> saleOrders) {
+        tenantHelper.enableTenantFilter();
+        return Math.round(saleOrders.stream().mapToDouble(SaleOrderDto::getRemainAmount).sum() * 100.00) / 100.00;
+    }
 }

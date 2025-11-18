@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.model.Goods;
+import com.example.model.Products;
 import com.example.repository.GoodsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,10 @@ public class GoodsService {
         tenantHelper.enableTenantFilter();
         return goodsRepository.findAllByItemId(itemService.getEntityByName(name).getId())
                 .stream().mapToDouble(Goods::getPriceForGrams).min().orElse(0.0);
+    }
+
+    public List<Goods> getAll() {
+        tenantHelper.enableTenantFilter();
+        return goodsRepository.findAll();
     }
 }

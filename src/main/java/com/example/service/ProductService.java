@@ -20,6 +20,10 @@ public class ProductService {
 
         return productsRepository.findByItemId(Itemid);
     }
+    public List<Products> getAll() {
+        tenantHelper.enableTenantFilter();
+        return productsRepository.findAll();
+    }
 
     public final double getMaxValue(String name) {
         tenantHelper.enableTenantFilter();

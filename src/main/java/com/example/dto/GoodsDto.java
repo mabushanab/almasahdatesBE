@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GoodsDto {
     private String itemName;
-    private float priceForGrams;
-    private float weightInGrams;
+    private double priceForGrams;
+    private double weightInGrams;
     private int discount;
     private String notes;
 
