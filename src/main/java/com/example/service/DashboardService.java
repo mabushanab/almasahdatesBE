@@ -182,26 +182,6 @@ public class DashboardService {
 
     }
 
-    public double sumPo(List<PurchaseOrderDto> purchaseOrders) {
-        tenantHelper.enableTenantFilter();
-        return purchaseOrderService.sumPo(purchaseOrders);
-    }
-
-    public double sumPoRemain(List<PurchaseOrderDto> purchaseOrders) {
-        tenantHelper.enableTenantFilter();
-        return purchaseOrderService.sumPoRemain(purchaseOrders);
-    }
-
-    public double sumSo(List<SaleOrderDto> saleOrders) {
-        tenantHelper.enableTenantFilter();
-        return saleOrderService.sumSo(saleOrders);
-    }
-
-    public double sumSoRemain(List<SaleOrderDto> saleOrders) {
-        tenantHelper.enableTenantFilter();
-        return saleOrderService.sumSoRemain(saleOrders);
-    }
-
     private double round2(double v) {
         return Math.round(v * 100.0) / 100.0;
     }
