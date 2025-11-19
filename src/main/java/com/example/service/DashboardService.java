@@ -140,8 +140,8 @@ public class DashboardService {
         List<Products> products = productService.getAll();
         List<Goods> goods = goodsService.getAll();
 
-        double sumProducts = products.stream().mapToDouble(p-> p.getPriceForItem() * p.getQuantity()).sum();
-        double sumGoods = goods.stream().mapToDouble(p-> p.getPriceForGrams() * p.getWeightInGrams()).sum();
+        double sumProducts = round2(products.stream().mapToDouble(p-> p.getPriceForItem() * p.getQuantity()).sum());
+        double sumGoods = round2(goods.stream().mapToDouble(p-> p.getPriceForGrams() * p.getWeightInGrams()).sum());
 
 
 
@@ -163,10 +163,51 @@ public class DashboardService {
                         item -> goodsService.getAllByItemId(item.getId())
                 ));
 
+
+        for (Item item : items) {
+            String name = item.getName();
+
+            List<Products> products = productsByItem.get(name);
+            List<Goods> goods = goodsByItem.get(name);
+
+            // Avg product price
+            double avgP = avgDouble(products.stream()
+                    .map(Products::getPriceForItem)
+                    .toList());
+
+            avgProductPrice.put(name, round2(avgP));
+
+            // Avg product price + box
+            double avgPBox = avgDouble(products.stream()
+                    .map(p -> p.getPriceForItem() + p.getBoxCost())
+                    .toList());
+
+            avgProductPriceWithBox.put(name, round2(avgPBox));
+
+                // Avg good price
+            double avgG = avgDouble(goods.stream()
+                    .map(Goods::getPriceForGrams)
+                    .toList());
+
+            avgGoodPrice.put(name, round2(avgG));
+
+            // Avg Profit per Item
+            double profit = avgP - avgG;
+            avgProfitPerItem.put(name, round2(profit));
+
+            // Total profit = (avg product price - avg goods price) * total quantity
+            double totalQuantity = products.stream()
+                    .mapToDouble(Products::getQuantity)
+                    .sum();
+
+            double totalProfit = profit * totalQuantity;
+            totalProfitPerItem.put(name, round2(totalProfit));
+        }
+
         List<PurchaseOrderDto> purchaseOrders = purchaseOrderService.getAllPurchaseOrders();
         List<SaleOrderDto> saleOrders = saleOrderService.getAllSaleOrders();
 
-        return null;
+        return new ProfitDashboardDto(sumProducts,sumGoods,sumProducts);
 
     }
 

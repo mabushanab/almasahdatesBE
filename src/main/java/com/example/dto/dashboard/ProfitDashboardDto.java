@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfitDashboardDto {
 
-    int profitPercent;
-    int profitPercentLast1Month;
-    int profitPercentLast3Month;
+    double profitPercent;
+    double profitPercentLast1Month;
+    double profitPercentLast3Month;
 }
